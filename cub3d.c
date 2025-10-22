@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:44:55 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/22 09:49:20 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:25:41 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int check_extension(char *file)
 {
-    if(strlen(file) < 5  ||  file[strlen(file) - 1] != 'b' || file[strlen(file) - 2] != 'u' ||
-        file[strlen(file) - 3] != 'c'|| file[strlen(file) - 4] != '.' )
+    if(strlen(file) < 4 || file[strlen(file) - 1] != 'b' || file[strlen(file) - 2] != 'u' ||
+        file[strlen(file) - 3] != 'c'|| file[strlen(file) - 4] != '.')
         return 0;
     return 1; 
 }
@@ -327,7 +327,7 @@ char  check_palyer(char **map)
         j = 0;
         while(map[i][j])
         {
-            if(map[i][j] == 'W' || map[i][j] == 'A' || map[i][j] == 'S'
+            if(map[i][j] == 'W' || map[i][j] == 'N' || map[i][j] == 'S'
                 || map[i][j] == 'E')
                 {
                     count_player++;
@@ -443,33 +443,49 @@ int valid_map(char **map)
     }
     return 1;
 }
+void initisalitaion(t_game *game)
+{
+    game->map = NULL;
+    game->ceiling_color = 0;
+    game->floor_color = 0;
+    game->path_ea = NULL;
+    game->path_no =NULL;
+    game->path_we= NULL;
+    game->path_so = NULL;
+}
 int main(int ac,char **av)
 {
-    char **map = NULL;
+    t_game *game = NULL;
+    game = malloc(sizeof(t_game));
+    if(!game)
+        return 1;
     char **new_map = NULL;
     int count;
     if(ac == 2)
     {
-        if(!check_extension(av[1]))
+        if(check_extension(av[1]) == 0)
         {
             write(2,"extension is not correcte!!\n",28);
             exit(1);
         }
         int fd = open(av[1],O_RDONLY);
         count = number_line(av[1]);
-        map = malloc(sizeof(char *) * (count + 1));
+        // initisalitaion(game);
+        game->map = malloc(sizeof(char *)* (count + 1));
+        if(!game->map)
+            return (free(game),1);
         int i = 0;
         char *line;
         while((line = get_next_line(fd)) != NULL)
         {
-            map[i] = line;
+            game->map[i] = ft_strdup(line);
             i++;
         }
-        map[i] = NULL;
-        parse_texture_line(map);
-        parse_color_line(map);
-        int start = find_start_of_map(map);
-        int count_new_map = count_line(map,start);
+        game->map[i] = NULL;
+        parse_texture_line(game->map);
+        parse_color_line(game->map);
+        int start = find_start_of_map(game->map);
+        int count_new_map = count_line(game->map,start);
         if(start == -1)
         {
             printf("map invalide!!!\n");
@@ -481,9 +497,9 @@ int main(int ac,char **av)
         // }
         new_map = malloc(sizeof(char *) * (count_new_map + 1));
         int begin = 0;
-        while(map[start])
+        while(game->map[start])
         {
-            new_map[begin] = strdup(map[start]);
+            new_map[begin] = strdup(game->map[start]);
             start++;
             begin++;
         }
@@ -517,7 +533,7 @@ int main(int ac,char **av)
         }
         print_map(new_map);
         close(fd);
-        free(map);
+        free(game->map);
         return 0;
     }
     return 1;

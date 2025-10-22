@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/30 08:35:58 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/22 12:32:49 by haboucha         ###   ########.fr       */
+/*   Created: 2025/10/22 10:18:00 by haboucha          #+#    #+#             */
+/*   Updated: 2025/10/22 10:18:17 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "cub3d.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
-# endif
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
 
-# include <fcntl.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-char	*ft_strdup(char *s1);
-char	*ft_strjoin(char *s1, char *s2);
-char	*get_next_line(int fd);
-char	*ft_strchr(char *s, int c);
-char	*read_buffer(char *res, int fd);
-
-#endif
+	i = 0;
+	while (s[i])
+	{
+		if ((char) c == s[i])
+			return ((char *)(&s[i]));
+		i++;
+	}
+	if ((char )c == '\0')
+		return ((char *)(&s[i]));
+	return (NULL);
+}

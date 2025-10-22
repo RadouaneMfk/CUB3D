@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/30 08:35:58 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/22 12:32:49 by haboucha         ###   ########.fr       */
+/*   Created: 2025/10/22 10:25:39 by haboucha          #+#    #+#             */
+/*   Updated: 2025/10/22 10:25:54 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "cub3d.h"
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
-# endif
 
-# include <fcntl.h>
-# include <stdlib.h>
-# include <unistd.h>
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
 
-char	*ft_strdup(char *s1);
-char	*ft_strjoin(char *s1, char *s2);
-char	*get_next_line(int fd);
-char	*ft_strchr(char *s, int c);
-char	*read_buffer(char *res, int fd);
-
-#endif
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}

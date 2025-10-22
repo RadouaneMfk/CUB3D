@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRCS = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
-		cub3d.c ft_split.c
+		cub3d.c libft/ft_split.c 
 
 OBJS = $(SRCS:.c=.o)
 
