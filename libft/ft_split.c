@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 10:15:39 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/22 10:15:40 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/27 18:43:27 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ static int	ft_count(char *str, char set)
 {
 	int	i;
 	int	count;
-
 	count = 0;
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] != set && (i == 0 || str[i - 1] == set))
+		if ((str[i] != set) &&  (i == 0 || str[i - 1] == set))
 			count++;
 		i++;
 	}
@@ -69,6 +68,7 @@ static int	allocation_tab(char **tab, const char *s, char c)
 	i = ((j = 0), 0);
 	while (s[i])
 	{
+
 		if (s[i] != c)
 		{
 			start = i;

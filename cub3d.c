@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:44:55 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/22 16:25:41 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/28 18:38:00 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ int check_extension(char *file)
 {
     if(strlen(file) < 4 || file[strlen(file) - 1] != 'b' || file[strlen(file) - 2] != 'u' ||
         file[strlen(file) - 3] != 'c'|| file[strlen(file) - 4] != '.')
+        return 0;
+    return 1; 
+}
+
+int check_extension1(char *file,char *ext)
+{
+    int position = strlen(file) - strlen(ext);
+    if(strlen(file) < strlen(ext))
+        return 0;
+    if(strcmp(file + position,ext) != 0)
         return 0;
     return 1; 
 }
@@ -32,7 +42,6 @@ int number_line(char *line)
         free(line);
         line = get_next_line(fd);
     }
-    // printf("count line= %d\n", i);
     close(fd);
     return i;
 }
@@ -47,15 +56,90 @@ void print_map(char **file)
     }
 }
 
+char *skip_spaces(char *str)
+{
+    int i = 0;
+    while(str[i] && isspace(str[i]))
+        i++;
+    return str + i;
+}
 void free_split(char **file)
 {
     int i = 0;
-    while(file[i])
+    while( file[i])
     {
         free(file[i]);
         i++;
     }
     free(file);
+}
+// int check_element(t_game *game)
+// {
+//     int i = 0;
+//     int count  = 0;
+//     int j;
+//     while(game->map[i])
+//     {
+//         j = 0;
+//         while(game->map[i][j] && isspace(game->map[i][j]))
+//             j++;
+//         if(game->map[i][j] == '\0')
+//         {
+//             i++;
+//             continue;
+//         }
+//         if ((strncmp(game->map[i], "NO ", 3) == 0) ||
+//             (strncmp(game->map[i], "SO ", 3) == 0) ||
+//             (strncmp(game->map[i], "EA ", 3) == 0) ||
+//             (strncmp(game->map[i], "WE ", 3) == 0) ||
+//             (strncmp(game->map[i], "F ", 2)  == 0) ||
+//             (strncmp(game->map[i], "C ", 2)  == 0))
+//         {
+//             count++;     
+//         }
+//         else if(game->map[i][j] == '0' || game->map[i][j] == '1' || 
+//                 game->map[i][j] == 'N' || game->map[i][j] == 'S' || game->map[i][j] == 'E' ||
+//                 game->map[i][j] == 'W')
+//             break;
+//         else
+//             return 0;
+//         i++;
+//     }
+//     if(count == 6)
+//         return 1;
+//     return 0;
+// }
+int check_element(t_game *game)
+{
+    int i = 0;
+    int count = 0;
+    while (game->map[i])
+    {
+        char *line = skip_spaces(game->map[i]);
+        if (*line == '\0') { i++; continue; }
+
+        if ((strncmp(line, "NO ", 3) == 0) ||
+            (strncmp(line, "SO ", 3) == 0) ||
+            (strncmp(line, "EA ", 3) == 0) ||
+            (strncmp(line, "WE ", 3) == 0) ||
+            (strncmp(line, "F ", 2)  == 0) ||
+            (strncmp(line, "C ", 2)  == 0))
+        {
+            count++;
+        }
+        else if (line[0] == '0' || line[0] == '1' ||
+                 line[0] == 'N' || line[0] == 'S' ||
+                 line[0] == 'E' || line[0] == 'W')
+        {
+            break;
+        }
+        else
+            return 0;
+        i++;
+    }
+    if(count == 6)
+        return 1;
+    return 0;
 }
 
 char  *texture_no_space(char *path)
@@ -65,7 +149,7 @@ char  *texture_no_space(char *path)
     while(isspace(path[start]))
         start++;
     end = strlen(path) - 1;
-    while(path[end] && end >= 0)
+    while(end >= 0 && path[end])
     {
         if(isspace(path[end]))
             path[end]='\0';
@@ -78,78 +162,155 @@ int check_path_exist()
     int fd_no = open("./textures/north.xpm",O_RDONLY);
     if(fd_no == -1)
         return(0);
-    // int fd_so = open("./textures/south.xpm",O_RDONLY);
-    // if(fd_so == -1)
-    //     return(0);
-    // int fd_we = open("./textures/west.xpm",O_RDONLY);
-    // if(fd_we == -1)
-    //     return(0);
-    // int fd_ea = open("./textures/eastt.xpm",O_RDONLY);
-    // if(fd_ea == -1)
-    //     return(0);
-    // return (close(fd_no),close(fd_so),close(fd_we),close(fd_ea),1);
-    return(close(fd_no),1);
+    int fd_so = open("./textures/south.xpm",O_RDONLY);
+    if(fd_so == -1)
+        return(0);
+    int fd_we = open("./textures/west.xpm",O_RDONLY);
+    if(fd_we == -1)
+        return(0);
+    int fd_ea = open("./textures/east.xpm",O_RDONLY);
+    if(fd_ea == -1)
+        return(0);
+    return (close(fd_no),close(fd_so),close(fd_we),close(fd_ea),1);
 }
-void parse_texture_line(char **file)
+
+int initialtion_path(t_game *game)
 {
-    int i =0;
-    int flag_no = 0;
-    int flag_so = 0;
-    int flag_we = 0;
-    int flag_ea = 0;
+    game->path_no = texture_no_space(game->path_no);
+    if(check_extension1(game->path_no,".xpm") == 0)
+        return(0);
+    game->path_so = texture_no_space(game->path_so);
+    if(check_extension1(game->path_so,".xpm") == 0)
+        return(0);
+    game->path_we = texture_no_space(game->path_we);
+    if(check_extension1(game->path_we,".xpm") == 0)
+        return(0);
+    game->path_ea = texture_no_space(game->path_ea);
+    if(check_extension1(game->path_ea,".xpm") == 0)
+        return(0);
+    return 1;
+}
 
-    char *path_no = NULL;
-    char *path_so = NULL;
-    char *path_we = NULL;
-    char *path_ea = NULL;
-    
-    while(file[i])
+char *trim_spaces(char *str)
+{
+    int start = 0;
+    int end = strlen(str) - 1;
+    while(str [start] && isspace(str[start]))
+        start++;
+    while(end >= start && isspace(str[end]))
+        end--;
+    int i = 0;
+    while(start <= end)
     {
-        if(strncmp(file[i],"NO ",3) == 0)
-        {
-            flag_no++;
-            path_no =strchr(file[i],'.');
+        str[i] = str[start];
+        i++;
+        start++;
+    }
+    str[i] = '\0';
+    return str;
+}
+int count_line(char **map,int i)
+{
+    int count = 0;
+    while(map[i])
+    {
+        count++;
+        i++;
+    }
+    return(count);
+}
 
-        }
-        else if(strncmp(file[i],"SO ",3) == 0)
+int store_path(t_game *game)
+{
+    int i = 0;
+    char **split = NULL;
+    char *line;
+    while(game->map[i])
+    {
+        line = skip_spaces(game->map[i]);
+        if(ft_strncmp(line,"NO ",3) == 0)
         {
-            flag_so++;
-            path_so = strchr(file[i],'.');
+            game->flag_no++;
+            line = trim_spaces(line);
+            split =  ft_split(line,' ');
+            if(count_line(split,0) != 2)
+            {
+                free_split(split);
+                write(2,"invalid path NO",16);
+                exit(1);
+            }
+            game->path_no = ft_strdup(trim_spaces(split[1]));
+            // free_split(split);
+            // split = NULL;
         }
-        else if(strncmp(file[i],"WE ",3) == 0)
+        else if(ft_strncmp(line,"SO ",3) == 0)
         {
-            flag_we++;
-            path_we = strchr(file[i],'.');
+            game->flag_so++;
+            line = trim_spaces(line);
+            split =  ft_split(line,' ');
+            // printf("--->count: %d\n",count_line(split,0));
+            // printf("path_so---> %s\n",split[1]);
+            if(count_line(split,0) != 2)
+            {
+                free_split(split);
+                write(2,"invalid path SO\n",17);
+                exit(1);
+            }
+            game->path_so = ft_strdup(trim_spaces(split[1]));
+            // free_split(split);
+            // split = NULL;
         }
-        else if(strncmp(file[i],"EA ",3) == 0)
+        else if(ft_strncmp(line,"EA ",3) == 0)
         {
-            flag_ea++;
-            path_ea = strchr(file[i],'.');
+            game->flag_ea++;
+            line = trim_spaces(line);
+            split =  ft_split(line,' ');
+            if(count_line(split,0) != 2)
+            {
+                write(2,"invalid path EA\n",17);
+                exit(1);
+            }
+            game->path_ea = ft_strdup(trim_spaces(split[1]));
+            // free_split(split);
+            // split = NULL;
+        }
+        else if(ft_strncmp(line,"WE ",3) == 0)
+        {
+            game->flag_we++;
+            line = trim_spaces(line);
+            split =  ft_split(line,' ');
+            if(count_line(split,0) != 2)
+            {
+                write(2,"invalid path WE\n",17);
+                exit(1);
+            }
+            game->path_we = ft_strdup(trim_spaces(split[1]));
+            // free_split(split);
+            // split = NULL;
         }
         i++;
     }
-    if(flag_no != 1 || flag_so != 1 || flag_we != 1 || flag_ea != 1)
+    return 1;
+}
+
+void parse_texture_line(t_game *game)
+{
+    store_path(game);
+    if(!game->path_no  || !game->path_so || !game->path_we || !game->path_ea)
     {
-        printf("duplicate erreur!!!\n");
+        return(free(game),write(2,"erreur not found path\n",23),exit(1));
+    }
+    if(game->flag_no != 1 || game->flag_ea != 1 || game->flag_we != 1 || game->flag_so != 1)
+    {
+        free(game);
+        write(2,"duplicate path erreur!!!\n",26);
         exit(1);
     }
-    if(!path_no  || !path_so || !path_we || !path_ea)
-    {
-        printf("erreur\n");
-        exit(1);
-    }
-    // printf("avant---->%lu\n",strlen(path_no));
-    path_no = texture_no_space(path_no);
-    // printf("apres---->%lu\n",strlen(path_no));
-    path_so = texture_no_space(path_so);
-    path_we = texture_no_space(path_we);
-    path_ea = texture_no_space(path_ea);
-    if(!check_path_exist())
-    {
-        printf("--->Textures file not found\n");
-        exit(1);
-    }
-    // printf("---->%s\n",path_no);
+    if(initialtion_path(game) == 0)
+        return(free(game),write(2,"path not exist\n",16),exit(1));
+    if(check_path_exist() == 0)
+        return(free(game),write(2,"path not found\n",16),exit(1));
+        
 }
 int count_number(char **file)
 {
@@ -162,140 +323,162 @@ int count_number(char **file)
     }
     return count;
 }
-
-void parse_color_line(char **file)
+int count_commas(char *file)
 {
     int i = 0;
-    
-    char **F = NULL;
-    char **C = NULL;
-    
-    int C_r = 0;
-    int C_g = 0;
-    int C_b = 0;
-
-    int F_r = 0;
-    int F_g = 0;
-    int F_b = 0;
-
-    int C_color = 0;
-    int F_color = 0;
-
-    int flag_F = 0;
-    int flag_C =0;
-    
+    int count = 0;
     while(file[i])
     {
-        if(strncmp(file[i],"F ",2) == 0)
+        if(file[i] == ',')
+            count++;
+        i++;
+    }
+    return(count);
+}
+int store_path_color(t_game *game)
+{
+    int i = 0;
+    char *line = NULL;
+    while(game->map[i])
+    {
+        line = skip_spaces(game->map[i]);
+        if(ft_strncmp(line,"F ",2) == 0)
         {
-            F = ft_split(strchr(file[i],' '),',');
-            flag_F++;
+            if(count_commas(line) != 2 )
+                return (0);    
+            game->color_floor = ft_split(ft_strchr(line,' '),',');
+            game->flag_F++;
         }
-        else if(strncmp(file[i],"C ",2) == 0)
+        else if(ft_strncmp(line,"C ",2) == 0)
         {
-            C = ft_split(strchr(file[i],' '),',');
-            flag_C++;
+            if(count_commas(line) != 2)
+                return (0);
+            game->color_ceiling = ft_split(ft_strchr(line,' '), ',');
+            game->flag_C++;
         }
         i++;
     }
-    if(flag_F != 1|| flag_C != 1)
-    {
-        printf("Duplicate color definition!!\n");
-        exit(1);
-    }
-    if(count_number(F) != 3 || count_number(C) != 3)
-    {
-        printf("erreur\n");
-        exit(1);
-    }
-    if(F)
-    {
-        i = 0;
-        int j = 0;
-        while(isspace(F[i][j]))
-            j++;
-        F_r = atoi(F[i++]);
-        F_g = atoi(F[i++]);
-        F_b = atoi(F[i]);
-        if((F_r >= 0 && F_g >= 0 && F_b >=0) && (F_r <= 255 && F_g <= 255 && F_b <= 255)  )    
-            F_color = (F_r << 16) + (F_g << 8) + F_b;
-        else
-        {
-            printf("erreur\n");
-            free_split(F);
-            exit(1);    
-        }
-    }
-    if(C)
-    {
-        i = 0;
-        int j = 0;
-        while(isspace(F[i][j]))
-            j++;
-        C_r = atoi(C[i++]);
-        C_g = atoi(C[i++]);
-        C_b = atoi(C[i]);
-        if((C_r >= 0 && C_g >= 0 && C_b >=0) && (C_r <= 255 && C_g <= 255 && C_b <= 255)  )    
-            C_color = (C_r << 16) + (C_g << 8) + C_b;
-        else
-        {
-            printf("erreur\n");
-            free_split(C);
-            exit(1);    
-       }    
-    }
-    free_split(F);
-    free_split(C);
+    if(game->flag_F != 1|| game->flag_C != 1)
+        return(write(2,"Duplicate color definition!!\n",30),0);
+    if(count_number(game->color_floor) != 3 || count_number(game->color_ceiling) != 3)
+       return(write(2,"you use must three number\n",27),0);
+    return 1;
 }
-
-int find_start_of_map(char **file)
+int check_types(char *file)
 {
     int i = 0;
-    while(file[i])
+    while(isspace(file[i]))
+        i++;
+    if(file[i] == '\0')
+        return 0;
+    while (file[i])
     {
-        int j = 0;
-        while(file[i][j] && isspace(file[i][j]))
-            j++;
-        if(file[i][j] == '\0')
+        if(!isdigit(file[i]))
+            return 0;
+        i++;
+    }
+    return 1;
+}
+
+int color_floor(t_game * game)
+{
+    int i;
+    i = 0;
+    while(game->color_floor[i])
+    {
+        game->color_floor[i] = trim_spaces(game->color_floor[i]);
+        if(check_types(game->color_floor[i])== 0)
+            return 0;
+        game->F_r = ft_atoi(game->color_floor[i]);
+        game->F_g = ft_atoi(game->color_floor[i]);
+        game->F_b = ft_atoi(game->color_floor[i]);
+        i++;
+    }
+    if((game->F_r >= 0 && game->F_g >= 0 && game->F_b >=0) && (game->F_r <= 255 && game->F_g <= 255 && game->F_b <= 255)  )    
+            game->floor_color = (game->F_r << 16) + (game->F_g  << 8) + game->F_b;
+    else
+        return 0;
+    return 1;
+}
+
+int color_ceiling(t_game *game)
+{
+    int i;
+    i = 0;
+    while(game->color_ceiling[i])
+    {
+        game->color_ceiling[i] = trim_spaces(game->color_ceiling[i]);
+        if(check_types(game->color_ceiling[i]) == 0)
+            return 0;
+        
+        game->C_r = ft_atoi(game->color_ceiling[i]);
+        game->C_g  = ft_atoi(game->color_ceiling[i]);
+        game->C_b  = ft_atoi(game->color_ceiling[i]);
+        i++;
+    }
+    if((game->C_r >= 0 && game->C_g  >= 0 && game->C_b  >=0) && (game->C_r  <= 255 && game->C_g <= 255 && game->C_b<= 255)  )    
+        game->ceiling_color = (game->C_r << 16) + (game->C_g<< 8) + game->C_b;
+    else
+        return 0;
+    return 1;
+}
+
+
+void parse_color_line(t_game *game)
+{  
+    if(store_path_color(game) == 0)
+    {
+        write(2,"fixe RGB colors\n",17);
+        free(game);
+        exit(1);
+    }
+    if(color_floor(game) == 0)
+    {
+        write(2,"--fixe color floor\n",18);
+        exit(1);
+    }
+    if(color_ceiling(game) == 0)
+    {
+        write(2,"fixe color ceiling\n",20);
+        exit(1);
+    }
+}
+
+int find_start_of_map(t_game *game)
+{
+    int i = 0;
+    while (game->map[i])
+    {
+        char *line = skip_spaces(game->map[i]);
+        if (*line == '\0') { i++; continue; }
+
+        if (strncmp(line, "NO ", 3) == 0 || strncmp(line, "SO ", 3) == 0 ||
+            strncmp(line, "WE ", 3) == 0 || strncmp(line, "EA ", 3) == 0 ||
+            strncmp(line, "F ", 2) == 0  || strncmp(line, "C ", 2) == 0)
         {
             i++;
             continue;
         }
-        if(strncmp(file[i],"NO ",3) == 0 || strncmp(file[i],"SO ",3) == 0 ||
-            strncmp(file[i],"WE ",3) == 0 || strncmp(file[i],"EA ",3) == 0 ||  
-            strncmp(file[i],"F ",2) == 0 || strncmp(file[i],"C ",2) == 0) 
-            {
-                i++;
-                continue;
-            }
-        int start = 1;
-        j =0;
-        while(file[i][j])
+        int j = 0;
+        int find = 1;
+        while (line[j])
         {
-            if(file[i][j] != ' ' && file[i][j] != '0'  && file[i][j] != '1' &&
-            file[i][j] != 'S' &&  file[i][j] != 'N' && file[i][j] != 'W' && file[i][j] != 'E'  && file[i][j] != '\n'  )
+            if (line[j] != ' ' && line[j] != '0' && line[j] != '1' &&
+                line[j] != 'S' && line[j] != 'N' && line[j] != 'W' &&
+                line[j] != 'E' && line[j] != '\n')
             {
-                start = 0;
+                find = 0;
                 break;
             }
-        j++;   
+            j++;
         }
-        if(start)
-            return(i);
+        if (find)
+             return i;
         i++;
     }
-    return (-1);
+    return -1;
 }
-int count_line(char **map,int i)
-{
-    int count = 0;
-    while(map[i])
-    {
-        i++;
-        count++;
-    }
-    return(count);
-}
+
 int element_valid(char **file)
 {
     int i = 0;
@@ -407,34 +590,50 @@ int check_last_char(char **map)
     while(map[i])
     {
         j = strlen(map[i]) - 2;
-        while(isspace(map[i][j]))
+        while( j > 0 && isspace(map[i][j]))
             j--;
-        if(map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
+        if(j > 0  && (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W'))
             return 0;
         i++;
     }  
     return 1;
 }
-
-int valid_map(char **map)
+int empty_line(char **map)
 {
     int i = 0;
     int j;
     while(map[i])
     {
+        j = 0;
+        while(isspace (map[i][j]))
+            j++;
+        if(map[i][j] == '\0')
+            return 0;  
+        i++;
+    }
+    return 1;
+}
+int valid_map(t_game *game)
+{
+    int i = 0;
+    int j;
+    if(empty_line(game->map) == 0 )
+        return 0;
+    while(game->map[i])
+    {
         j= 0;
-        while(map[i][j])
+        while(game->map[i][j])
         {
-            if(map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E'
-                || map[i][j] == 'W')
+            if(game->map[i][j] == '0' || game->map[i][j] == 'N' || game->map[i][j] == 'S' || game->map[i][j] == 'E'
+                || game->map[i][j] == 'W')
                 {
-                    if(j  > 0 && map[i][j-1] == ' ')
+                    if(j > 0 && game->map[i][j-1] == ' ')
                         return 0;
-                    if(map[i][j+1] == ' ')
+                    if(game->map[i][j+1] == ' ')
                         return 0;
-                    if(map[i+1] != NULL && map[i+1][j] == ' ' )
+                    if(game->map[i+1] != NULL && game->map[i+1][j] == ' ' )
                         return 0;
-                    if( i > 0  && map[i - 1] != NULL && map[i - 1][j] == ' ')
+                    if( i > 0  && game->map[i - 1] != NULL && game->map[i - 1][j] == ' ')
                         return 0;
                 }
             j++;
@@ -452,6 +651,32 @@ void initisalitaion(t_game *game)
     game->path_no =NULL;
     game->path_we= NULL;
     game->path_so = NULL;
+    game->flag_no = 0;
+    game->flag_so = 0;
+    game->flag_we = 0;
+    game->flag_ea = 0;
+    game->color_floor = NULL;
+    game->color_ceiling = NULL;
+    game->flag_C = 0;
+    game->flag_F = 0;
+}
+char **read_map(t_game *game,char *av)
+{
+    int count = number_line(av);
+    int fd = open(av,O_RDONLY);
+    game->map = malloc(sizeof(char *) * (count + 1));
+    if(!game->map)
+        return(free(game),NULL);
+    int i = 0;
+    char *line;
+    while((line = get_next_line(fd)) != NULL)
+    {
+        game->map[i] = line;
+        i++;
+    }
+    game->map[i] = NULL;
+    close(fd);
+    return game->map; 
 }
 int main(int ac,char **av)
 {
@@ -460,7 +685,6 @@ int main(int ac,char **av)
     if(!game)
         return 1;
     char **new_map = NULL;
-    int count;
     if(ac == 2)
     {
         if(check_extension(av[1]) == 0)
@@ -468,33 +692,22 @@ int main(int ac,char **av)
             write(2,"extension is not correcte!!\n",28);
             exit(1);
         }
-        int fd = open(av[1],O_RDONLY);
-        count = number_line(av[1]);
-        // initisalitaion(game);
-        game->map = malloc(sizeof(char *)* (count + 1));
-        if(!game->map)
-            return (free(game),1);
-        int i = 0;
-        char *line;
-        while((line = get_next_line(fd)) != NULL)
+        initisalitaion(game);
+        game->map = read_map(game,av[1]);
+        parse_texture_line(game);
+        parse_color_line(game);
+        if(check_element(game) == 0)
         {
-            game->map[i] = ft_strdup(line);
-            i++;
+            printf("element no vlaid in map\n");
+            exit(1);
         }
-        game->map[i] = NULL;
-        parse_texture_line(game->map);
-        parse_color_line(game->map);
-        int start = find_start_of_map(game->map);
+        int start = find_start_of_map(game);
         int count_new_map = count_line(game->map,start);
         if(start == -1)
         {
             printf("map invalide!!!\n");
             exit(1);
         }
-        // else
-        // {
-        //     // printf("---->%d\n",start);
-        // }
         new_map = malloc(sizeof(char *) * (count_new_map + 1));
         int begin = 0;
         while(game->map[start])
@@ -504,6 +717,7 @@ int main(int ac,char **av)
             begin++;
         }
         new_map[begin] = NULL;
+        game->map = new_map;
         if(element_valid(new_map) == 0)
         {
             printf("element no valid in map !!\n");
@@ -526,13 +740,12 @@ int main(int ac,char **av)
             printf("fixe last char\n");
             exit(1);
         }
-        if(valid_map(new_map) == 0)
+        if(valid_map(game) == 0)
         {
             printf("le map invalid!!\n");
             exit(1);
         }
         print_map(new_map);
-        close(fd);
         free(game->map);
         return 0;
     }

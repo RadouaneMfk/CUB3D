@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:43:57 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/22 12:32:05 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/27 11:45:15 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,29 @@ typedef struct s_game
     int floor_color;
     int ceiling_color;
     char player_dir;
-    
+    char **color_floor;
+    char **color_ceiling;
+    int flag_F;
+    int flag_C;
+    int flag_no;
+    int flag_so;
+    int flag_we;
+    int flag_ea;
+    int C_r;
+    int C_g;
+    int C_b;
+    int F_r;
+    int F_g;
+    int F_b;
     
 }   t_game;
  
 
 char	**ft_split(char const *s, char c);
-char	*ft_itoa(int n);
 size_t	ft_strlen(const char *s);
-
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int	ft_isspace(int c);
+int	ft_atoi(const char *str);
 
 
 #endif
