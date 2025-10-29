@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:43:57 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/29 12:56:36 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/29 16:02:45 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,15 @@ int	ft_isspace(int c);
 int	ft_atoi(const char *str);
 int	ft_isdigit(int c);
 int ft_strcmp(char *s1,char *s2);
+char *trim_spaces(char *str);
+void parse_color_line(t_game *game);
+int count_number(char **file);
+int count_commas(char *file);
+char *skip_spaces(char *str);
+int count_line(char **map,int i);
+int check_extension(char *file,char *ext);
+void parse_texture_line(t_game *game);
+void free_split(char **file);
+
 
 #endif

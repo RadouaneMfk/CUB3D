@@ -1,8 +1,8 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
 SRCS = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
 		cub3d.c libft/ft_split.c libft/ft_strncmp.c libft/ft_isspace.c libft/ft_atoi.c \
-		libft/ft_isdigit.c libft/ft_strcmp.c
+		libft/ft_isdigit.c libft/ft_strcmp.c check_colors.c check_textures.c
 
 OBJS = $(SRCS:.c=.o)
 
