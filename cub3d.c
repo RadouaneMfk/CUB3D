@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:44:55 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/28 18:38:00 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/29 13:02:08 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int check_extension(char *file)
 
 int check_extension1(char *file,char *ext)
 {
-    int position = strlen(file) - strlen(ext);
-    if(strlen(file) < strlen(ext))
+    int position = ft_strlen(file) - ft_strlen(ext);
+    if(ft_strlen(file) < ft_strlen(ext))
         return 0;
-    if(strcmp(file + position,ext) != 0)
+    if(ft_strcmp(file + position,ext) != 0)
         return 0;
     return 1; 
 }
@@ -59,7 +59,7 @@ void print_map(char **file)
 char *skip_spaces(char *str)
 {
     int i = 0;
-    while(str[i] && isspace(str[i]))
+    while(str[i] && ft_isspace(str[i]))
         i++;
     return str + i;
 }
@@ -73,42 +73,7 @@ void free_split(char **file)
     }
     free(file);
 }
-// int check_element(t_game *game)
-// {
-//     int i = 0;
-//     int count  = 0;
-//     int j;
-//     while(game->map[i])
-//     {
-//         j = 0;
-//         while(game->map[i][j] && isspace(game->map[i][j]))
-//             j++;
-//         if(game->map[i][j] == '\0')
-//         {
-//             i++;
-//             continue;
-//         }
-//         if ((strncmp(game->map[i], "NO ", 3) == 0) ||
-//             (strncmp(game->map[i], "SO ", 3) == 0) ||
-//             (strncmp(game->map[i], "EA ", 3) == 0) ||
-//             (strncmp(game->map[i], "WE ", 3) == 0) ||
-//             (strncmp(game->map[i], "F ", 2)  == 0) ||
-//             (strncmp(game->map[i], "C ", 2)  == 0))
-//         {
-//             count++;     
-//         }
-//         else if(game->map[i][j] == '0' || game->map[i][j] == '1' || 
-//                 game->map[i][j] == 'N' || game->map[i][j] == 'S' || game->map[i][j] == 'E' ||
-//                 game->map[i][j] == 'W')
-//             break;
-//         else
-//             return 0;
-//         i++;
-//     }
-//     if(count == 6)
-//         return 1;
-//     return 0;
-// }
+
 int check_element(t_game *game)
 {
     int i = 0;
@@ -118,12 +83,12 @@ int check_element(t_game *game)
         char *line = skip_spaces(game->map[i]);
         if (*line == '\0') { i++; continue; }
 
-        if ((strncmp(line, "NO ", 3) == 0) ||
-            (strncmp(line, "SO ", 3) == 0) ||
-            (strncmp(line, "EA ", 3) == 0) ||
-            (strncmp(line, "WE ", 3) == 0) ||
-            (strncmp(line, "F ", 2)  == 0) ||
-            (strncmp(line, "C ", 2)  == 0))
+        if ((ft_strncmp(line, "NO ", 3) == 0) ||
+            (ft_strncmp(line, "SO ", 3) == 0) ||
+            (ft_strncmp(line, "EA ", 3) == 0) ||
+            (ft_strncmp(line, "WE ", 3) == 0) ||
+            (ft_strncmp(line, "F ", 2)  == 0) ||
+            (ft_strncmp(line, "C ", 2)  == 0))
         {
             count++;
         }
@@ -146,12 +111,12 @@ char  *texture_no_space(char *path)
 {
     int start = 0;
     int end = 0;
-    while(isspace(path[start]))
+    while(ft_isspace(path[start]))
         start++;
-    end = strlen(path) - 1;
+    end = ft_strlen(path) - 1;
     while(end >= 0 && path[end])
     {
-        if(isspace(path[end]))
+        if(ft_atoi(&path[end]))
             path[end]='\0';
         end--;
     }
@@ -194,10 +159,10 @@ int initialtion_path(t_game *game)
 char *trim_spaces(char *str)
 {
     int start = 0;
-    int end = strlen(str) - 1;
-    while(str [start] && isspace(str[start]))
+    int end = ft_strlen(str) - 1;
+    while(str [start] && ft_isspace(str[start]))
         start++;
-    while(end >= start && isspace(str[end]))
+    while(end >= start && ft_isspace(str[end]))
         end--;
     int i = 0;
     while(start <= end)
@@ -367,13 +332,13 @@ int store_path_color(t_game *game)
 int check_types(char *file)
 {
     int i = 0;
-    while(isspace(file[i]))
+    while(ft_isspace(file[i]))
         i++;
     if(file[i] == '\0')
         return 0;
     while (file[i])
     {
-        if(!isdigit(file[i]))
+        if(!ft_isdigit(file[i]))
             return 0;
         i++;
     }
@@ -452,9 +417,9 @@ int find_start_of_map(t_game *game)
         char *line = skip_spaces(game->map[i]);
         if (*line == '\0') { i++; continue; }
 
-        if (strncmp(line, "NO ", 3) == 0 || strncmp(line, "SO ", 3) == 0 ||
-            strncmp(line, "WE ", 3) == 0 || strncmp(line, "EA ", 3) == 0 ||
-            strncmp(line, "F ", 2) == 0  || strncmp(line, "C ", 2) == 0)
+        if (ft_strncmp(line, "NO ", 3) == 0 || ft_strncmp(line, "SO ", 3) == 0 ||
+            ft_strncmp(line, "WE ", 3) == 0 || ft_strncmp(line, "EA ", 3) == 0 ||
+            ft_strncmp(line, "F ", 2) == 0  || ft_strncmp(line, "C ", 2) == 0)
         {
             i++;
             continue;
@@ -522,12 +487,12 @@ char  check_palyer(char **map)
     }
     if(count_player > 1)
     {
-        printf("multiple player in the map!!\n");
+        write(2,"multiple player in the map!!\n",30);
         exit(1);        
     }
     else if(count_player == 0)
     {
-        printf("player not found!!\n");
+        write(2,"player not found!!\n",20);
         exit(1);
     }
     return(player_dir);    
@@ -589,8 +554,8 @@ int check_last_char(char **map)
     int j = 0;
     while(map[i])
     {
-        j = strlen(map[i]) - 2;
-        while( j > 0 && isspace(map[i][j]))
+        j = ft_strlen(map[i]) - 2;
+        while( j > 0 && ft_isspace(map[i][j]))
             j--;
         if(j > 0  && (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W'))
             return 0;
@@ -605,7 +570,7 @@ int empty_line(char **map)
     while(map[i])
     {
         j = 0;
-        while(isspace (map[i][j]))
+        while(ft_isspace (map[i][j]))
             j++;
         if(map[i][j] == '\0')
             return 0;  
@@ -698,14 +663,14 @@ int main(int ac,char **av)
         parse_color_line(game);
         if(check_element(game) == 0)
         {
-            printf("element no vlaid in map\n");
+            write(2,"element no vlaid in map\n",25);
             exit(1);
         }
         int start = find_start_of_map(game);
         int count_new_map = count_line(game->map,start);
         if(start == -1)
         {
-            printf("map invalide!!!\n");
+            write(2,"map invalide!!!\n",17);
             exit(1);
         }
         new_map = malloc(sizeof(char *) * (count_new_map + 1));
@@ -720,29 +685,29 @@ int main(int ac,char **av)
         game->map = new_map;
         if(element_valid(new_map) == 0)
         {
-            printf("element no valid in map !!\n");
+            write(2,"element no valid in map !!\n",28);
             exit(1);    
         }
-        char player_dir = check_palyer(new_map);
-        printf("--->pos_plyer: %c\n",player_dir);
+        game->player_dir = check_palyer(new_map);
+        printf("--->pos_plyer: %c\n",game->player_dir);
         if(valid_walls(new_map) == 0)
         {
-            printf("check valadition map!!\n");
+            write(2,"check valadition map!!\n",24);
             exit(1);
         }
         if(check_first_char(new_map) == 0)
         {
-            printf("fixe first char\n");
+            write(2,"fixe first char\n",17);
             exit(1);
         }
         if(check_last_char(new_map) == 0)
         {
-            printf("fixe last char\n");
+            write(2,"fixe last char\n",16);
             exit(1);
         }
         if(valid_map(game) == 0)
         {
-            printf("le map invalid!!\n");
+            write(2,"le map invalid!!\n",18);
             exit(1);
         }
         print_map(new_map);

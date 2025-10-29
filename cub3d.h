@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:43:57 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/27 11:45:15 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/29 12:56:36 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ size_t	ft_strlen(const char *s);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 int	ft_isspace(int c);
 int	ft_atoi(const char *str);
-
+int	ft_isdigit(int c);
+int ft_strcmp(char *s1,char *s2);
 
 #endif
