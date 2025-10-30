@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 12:44:55 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/29 18:15:37 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:19:11 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -390,10 +390,10 @@ char **read_map(t_game *game,char *av)
     close(fd);
     return game->map; 
 }
-// void ll()
-// {
-//     system("leaks cub3d");
-// }
+void ll()
+{
+    system("leaks cub3d");
+}
 int main(int ac,char **av)
 {
     t_game *game = NULL;
@@ -401,7 +401,6 @@ int main(int ac,char **av)
     if(!game)
         return 1;
     char **new_map = NULL;
-    // atexit(ll);
     if(ac == 2)
     {
         if(check_extension(av[1],".cub") == 0)
@@ -413,6 +412,8 @@ int main(int ac,char **av)
         game->map = read_map(game,av[1]);
         parse_texture_line(game);
         parse_color_line(game);
+       
+        atexit(ll);
         if(check_element(game) == 0)
         {
             write(2,"element no vlaid in map\n",25);
@@ -435,6 +436,7 @@ int main(int ac,char **av)
         }
         // printf("-->%p\n",(void *)&new_map[begin]);
         new_map[begin] = NULL;
+        free_split(game->map);
         game->map = new_map;
         if(element_valid(new_map) == 0)
         {
@@ -442,7 +444,6 @@ int main(int ac,char **av)
             exit(1);    
         }
         game->player_dir = check_palyer(new_map);
-        // printf("--->pos_plyer: %c\n",game->player_dir);
         if(valid_walls(new_map) == 0)
         {
             write(2,"check valadition map!!\n",24);
@@ -464,15 +465,16 @@ int main(int ac,char **av)
             exit(1);
         }
         print_map(new_map);
-        // free_split(new_map);
-        // free_split(game->color_ceiling);
-        // free_split(game->color_floor);
-        // free(game->path_ea);
-        // free(game->path_we);
-        // free(game->path_so);
-        // free(game->path_no);
-        // free_split(game->map);
-        // free(game);
+        
+        free_split(new_map);
+        printf("----->test\n");
+        free_split(game->color_ceiling);
+        free_split(game->color_floor);
+        free(game->path_ea);
+        free(game->path_we);
+        free(game->path_so);
+        free(game->path_no);
+        free(game);
         return 0;
     }
     return 1;

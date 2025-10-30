@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:38:29 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/29 18:13:11 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/30 10:30:28 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int store_path(t_game *game)
         line = skip_spaces(game->map[i]);
         if(ft_strncmp(line,"NO ",3) == 0)
         {
+
             game->flag_no++;
             line = trim_spaces(line);
             split =  ft_split(line,' ');
@@ -83,8 +84,8 @@ int store_path(t_game *game)
                 exit(1);
             }
             game->path_no = ft_strdup(trim_spaces(split[1]));
-            // free_split(split);
-            // split = NULL;
+            free_split(split);
+            split = NULL;
         }
         else if(ft_strncmp(line,"SO ",3) == 0)
         {
@@ -98,8 +99,8 @@ int store_path(t_game *game)
                 exit(1);
             }
             game->path_so = ft_strdup(trim_spaces(split[1]));
-            // free_split(split);
-            // split = NULL;
+            free_split(split);
+            split = NULL;
         }
         else if(ft_strncmp(line,"EA ",3) == 0)
         {
@@ -113,8 +114,8 @@ int store_path(t_game *game)
                 exit(1);
             }
             game->path_ea = ft_strdup(trim_spaces(split[1]));
-            // free_split(split);
-            // split = NULL;
+            free_split(split);
+            split = NULL;
         }
         else if(ft_strncmp(line,"WE ",3) == 0)
         {
@@ -128,8 +129,8 @@ int store_path(t_game *game)
                 exit(1);
             }
             game->path_we = ft_strdup(trim_spaces(split[1]));
-            // free_split(split);
-            // split = NULL;
+            free_split(split);
+            split = NULL;
         }
         i++;
     }
@@ -141,18 +142,48 @@ void parse_texture_line(t_game *game)
     store_path(game);
     if(!game->path_no  || !game->path_so || !game->path_we || !game->path_ea)
     {
-        return(free(game),write(2,"erreur not found path\n",23),exit(1));
+        free(game->path_ea);
+        free(game->path_we);
+        free(game->path_so);
+        free(game->path_no);
+        free_split(game->map);
+        free(game);
+        write(2,"erreur not found path\n",23);
+        exit(1);
+        
     }
     if(game->flag_no != 1 || game->flag_ea != 1 || game->flag_we != 1 || game->flag_so != 1)
     {
+        free(game->path_ea);
+        free(game->path_we);
+        free(game->path_so);
+        free(game->path_no);
+        free_split(game->map);
         free(game);
         write(2,"duplicate path erreur!!!\n",26);
         exit(1);
     }
     if(initialtion_path(game) == 0)
-        return(free(game),write(2,"path not exist\n",16),exit(1));
+    {
+        free(game->path_ea);
+        free(game->path_we);
+        free(game->path_so);
+        free(game->path_no);
+        free_split(game->map);
+        free(game);
+        write(2,"path not exist\n",16);
+        exit(1);
+    }
     if(check_path_exist() == 0)
-        return(free(game),write(2,"path not found\n",16),exit(1));
-    
+    {
+        free(game->path_ea);
+        free(game->path_we);
+        free(game->path_so);
+        free(game->path_no);
+        free_split(game->map);
+        free(game);
+        write(2,"path not found\n",16);
+        exit(1);  
         
+    }
 }

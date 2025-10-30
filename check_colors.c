@@ -6,7 +6,7 @@
 /*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 15:33:13 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/29 17:43:03 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/10/30 15:06:31 by haboucha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,30 +33,48 @@ int store_path_color(t_game *game)
 {
     int i = 0;
     char *line = NULL;
+    char **split_color = NULL;
     while(game->map[i])
     {
         line = skip_spaces(game->map[i]);
         if(ft_strncmp(line,"F ",2) == 0)
         {
-            if(count_commas(line) != 2 )
-                return (0);    
-            game->color_floor = ft_split(ft_strchr(line,' '),',');
             game->flag_F++;
+            split_color = ft_split(ft_strchr(line,' '),',');
+            if(count_commas(line) != 2 )
+            {
+                free_split(split_color); 
+                return (0);    
+            }
+            game->color_floor = split_color;
         }
         else if(ft_strncmp(line,"C ",2) == 0)
         {
-            if(count_commas(line) != 2)
-                return (0);
-            game->color_ceiling = ft_split(ft_strchr(line,' '), ',');
             game->flag_C++;
+            split_color = ft_split(ft_strchr(line,' '),',');
+            if(count_commas(line) != 2)
+            {
+                free_split(split_color); 
+                return (0);
+            }
+            game->color_ceiling = split_color;
+            
         }
         i++;
     }
+    if(!game->color_floor || !game->color_ceiling)
+    {
+        free_split(split_color); 
+        return 0;
+    }
     if(game->flag_F != 1|| game->flag_C != 1)
-        return(write(2,"Duplicate color definition!!\n",30),0);
+    {
+        free_split(split_color);
+        return(0);
+    }
     if(count_number(game->color_floor) != 3 || count_number(game->color_ceiling) != 3)
        return(write(2,"you use must three number\n",27),0);
-    free(line);
+    
     return 1;
 }
 
@@ -90,7 +108,9 @@ int color_ceiling(t_game *game)
     {
         game->color_ceiling[i] = trim_spaces(game->color_ceiling[i]);
         if(check_types(game->color_ceiling[i]) == 0)
+        {
             return 0;
+        }
         game->C_r = ft_atoi(game->color_ceiling[i]);
         game->C_g  = ft_atoi(game->color_ceiling[++i]);
         game->C_b  = ft_atoi(game->color_ceiling[++i]);
@@ -106,18 +126,24 @@ int color_ceiling(t_game *game)
 
 void parse_color_line(t_game *game)
 {  
+     
     if(store_path_color(game) == 0)
     {
-        write(2,"fixe RGB colors\n",17);
+        write(2,"--fixe RGB colors\n",19);
+        free(game->path_ea);
+        free(game->path_no);
+        free(game->path_so);
+        free(game->path_we);
+        free_split(game->map);
         free(game);
         exit(1);
     }
-    if(color_floor(game) == 0)
+    else if(color_floor(game) == 0)
     {
         write(2,"--fixe color floor\n",18);
         exit(1);
     }
-    if(color_ceiling(game) == 0)
+    else if(color_ceiling(game) == 0)
     {
         write(2,"fixe color ceiling\n",20);
         exit(1);
