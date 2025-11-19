@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 12:44:55 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/30 15:19:11 by haboucha         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+
 
 #include "cub3d.h"
 
@@ -398,6 +388,7 @@ int main(int ac,char **av)
 {
     t_game *game = NULL;
     game = malloc(sizeof(t_game));
+    atexit(ll);
     if(!game)
         return 1;
     char **new_map = NULL;
@@ -413,7 +404,6 @@ int main(int ac,char **av)
         parse_texture_line(game);
         parse_color_line(game);
        
-        atexit(ll);
         if(check_element(game) == 0)
         {
             write(2,"element no vlaid in map\n",25);

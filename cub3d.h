@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 12:43:57 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/29 16:02:45 by haboucha         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef CUB3D_H
 #define CUB3D_H
@@ -24,7 +13,6 @@
 
 typedef struct s_game
 {
-    
     char **map;
     char *path_no;
     char *path_so;
@@ -47,7 +35,6 @@ typedef struct s_game
     int F_r;
     int F_g;
     int F_b;
-    
 }   t_game;
  
 

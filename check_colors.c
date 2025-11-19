@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_colors.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/29 15:33:13 by haboucha          #+#    #+#             */
-/*   Updated: 2025/10/30 15:06:31 by haboucha         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -58,13 +47,14 @@ int store_path_color(t_game *game)
                 return (0);
             }
             game->color_ceiling = split_color;
-            
         }
+        // else
+        //     return 0;
         i++;
     }
     if(!game->color_floor || !game->color_ceiling)
     {
-        free_split(split_color); 
+        free_split(split_color);
         return 0;
     }
     if(game->flag_F != 1|| game->flag_C != 1)
