@@ -32,7 +32,8 @@ void store_path_color(t_game *game)
             split_color = ft_split(ft_strchr(line,' '),',');
             if(count_commas(line) != 2 )
             {
-                free_split(split_color); 
+                free_split(split_color);
+                write(2,"Erreur\n",8);
                 exit (1);    
             }
             game->color_floor = split_color;
@@ -44,6 +45,7 @@ void store_path_color(t_game *game)
             if(count_commas(line) != 2)
             {
                 free_split(split_color); 
+                write(2,"Erreur\n",8);
                 exit (1);
             }
             game->color_ceiling = split_color;
@@ -121,6 +123,7 @@ void parse_color_line(t_game *game)
     }
     else if(count_number(game->color_floor) != 3 || count_number(game->color_ceiling) != 3)
     {
+        write(2,"Erreur\n",8);
         write(2,"you use must three number\n",27);
         exit(1);
     }
