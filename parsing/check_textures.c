@@ -53,7 +53,7 @@ int initialtion_path(t_game *game)
     return 1;
 }
 
-int store_path(t_game *game)
+void store_path(t_game *game)
 {
     int i = 0;
     char **split = NULL;
@@ -124,7 +124,6 @@ int store_path(t_game *game)
         }
         i++;
     }
-    return 1;
 }
 
 void parse_texture_line(t_game *game)

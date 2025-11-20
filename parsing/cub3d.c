@@ -386,15 +386,15 @@ void ll()
 }
 int main(int ac,char **av)
 {
+    if(ac != 2)
+        return 1;
     t_game *game = NULL;
     game = malloc(sizeof(t_game));
     atexit(ll);
     if(!game)
         return 1;
     char **new_map = NULL;
-    if(ac == 2)
-    {
-        if(check_extension(av[1],".cub") == 0)
+    if(check_extension(av[1],".cub") == 0)
         {
             write(2,"extension is not correcte!!\n",28);
             exit(1);
@@ -403,6 +403,7 @@ int main(int ac,char **av)
         game->map = read_map(game,av[1]);
         parse_texture_line(game);
         parse_color_line(game);
+       
        
         if(check_element(game) == 0)
         {
@@ -465,7 +466,5 @@ int main(int ac,char **av)
         free(game->path_so);
         free(game->path_no);
         free(game);
-        return 0;
-    }
-    return 1;
+    return 0;
 }
