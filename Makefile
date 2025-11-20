@@ -3,6 +3,8 @@ NAME = cub3D
 SRC = src/intersections.c src/Draw_map.c src/ft_player.c src/rayCasting.c src/draw_utils.c
 
 CC = cc
+
+
 # CFLAGS = -Wall -Wextra -Werror
 MLX = -I includes/MLX42/include -L includes/MLX42/build -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit
 
