@@ -21,16 +21,16 @@ char  *texture_no_space(char *path)
 
 int check_path_exist()
 {
-    int fd_no = open("./textures/north.xpm",O_RDONLY);
+    int fd_no = open("./textures/north.png",O_RDONLY);
     if(fd_no == -1)
         return(0);
-    int fd_so = open("./textures/south.xpm",O_RDONLY);
+    int fd_so = open("./textures/south.png",O_RDONLY);
     if(fd_so == -1)
         return(0);
-    int fd_we = open("./textures/west.xpm",O_RDONLY);
+    int fd_we = open("./textures/west.png",O_RDONLY);
     if(fd_we == -1)
         return(0);
-    int fd_ea = open("./textures/east.xpm",O_RDONLY);
+    int fd_ea = open("./textures/east.png",O_RDONLY);
     if(fd_ea == -1)
         return(0);
     return (close(fd_no),close(fd_so),close(fd_we),close(fd_ea),1);
@@ -39,16 +39,16 @@ int check_path_exist()
 int initialtion_path(t_game *game)
 {
     game->path_no = texture_no_space(game->path_no);
-    if(check_extension(game->path_no,".xpm") == 0)
+    if(check_extension(game->path_no,".png") == 0)
         return(0);
     game->path_so = texture_no_space(game->path_so);
-    if(check_extension(game->path_so,".xpm") == 0)
+    if(check_extension(game->path_so,".png") == 0)
         return(0);
     game->path_we = texture_no_space(game->path_we);
-    if(check_extension(game->path_we,".xpm") == 0)
+    if(check_extension(game->path_we,".png") == 0)
         return(0);
     game->path_ea = texture_no_space(game->path_ea);
-    if(check_extension(game->path_ea,".xpm") == 0)
+    if(check_extension(game->path_ea,".png") == 0)
         return(0);
     return 1;
 }
