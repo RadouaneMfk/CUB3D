@@ -1,8 +1,4 @@
-
-
 #include "cub3d.h"
-
-
 char  *texture_no_space(char *path)
 {
     int start = 0;
