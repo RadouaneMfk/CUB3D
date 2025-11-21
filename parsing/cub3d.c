@@ -384,13 +384,14 @@ void ll()
 {
     system("leaks cub3d");
 }
+
 int main(int ac,char **av)
 {
     if(ac != 2)
         return 1;
     t_game *game = NULL;
     game = malloc(sizeof(t_game));
-    atexit(ll);
+    // atexit(ll);
     if(!game)
         return 1;
     char **new_map = NULL;
@@ -455,8 +456,7 @@ int main(int ac,char **av)
             write(2,"le map invalid!!\n",18);
             exit(1);
         }
-        print_map(new_map);
-        
+        // print_map(new_map);
         free_split(new_map);
         printf("----->test\n");
         free_split(game->color_ceiling);
