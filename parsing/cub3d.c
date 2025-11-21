@@ -384,13 +384,14 @@ void ll()
 {
     system("leaks cub3d");
 }
+
 int main(int ac,char **av)
 {
     if(ac != 2)
         return 1;
     t_game *game = NULL;
     game = malloc(sizeof(t_game));
-    atexit(ll);
+    // atexit(ll);
     if(!game)
         return 1;
     char **new_map = NULL;
@@ -403,7 +404,11 @@ int main(int ac,char **av)
         game->map = read_map(game,av[1]);
         parse_texture_line(game);
         parse_color_line(game);
-       
+
+        // printf("SO: %s\n",game->path_so);
+        // printf("NO: %s\n",game->path_no);
+        // printf("WE: %s\n",game->path_we);
+        // printf("EA: %s\n",game->path_ea);
        
         if(check_element(game) == 0)
         {
@@ -456,9 +461,9 @@ int main(int ac,char **av)
             exit(1);
         }
         print_map(new_map);
-        
+
         free_split(new_map);
-        printf("----->test\n");
+        // printf("----->test\n");
         free_split(game->color_ceiling);
         free_split(game->color_floor);
         free(game->path_ea);

@@ -7,8 +7,8 @@
 # include <stdio.h>
 # include <math.h>
 # include <sys/time.h>
-# include "MLX42/include/MLX42/MLX42.h"
 # include "../lib/libft.h"
+# include <MLX42/MLX42.h>
 
 #define WIDTH 1080
 #define HEIGHT 720

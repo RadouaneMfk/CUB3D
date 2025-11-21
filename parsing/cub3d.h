@@ -13,6 +13,8 @@
 
 typedef struct s_game
 {
+    // mlx_t *mlx;
+    // t_textures textures;
     char **map;
     char *path_no;
     char *path_so;
@@ -36,7 +38,27 @@ typedef struct s_game
     int F_g;
     int F_b;
 }   t_game;
+
+
+// typedef struct s_textures
+// {
+//     mlx_t *mlx;
+
+//     mlx_image_t *img_no;
+//     mlx_image_t *img_so;
+//     mlx_image_t *img_we;
+//     mlx_image_t *img_ea;
+
+//     mlx_texture_t *tex_no;
+//     mlx_texture_t *tex_so;
+//     mlx_texture_t *tex_we;
+//     mlx_texture_t *tex_ea;
+
+// } t_textures;
  
+
+
+
 
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);
