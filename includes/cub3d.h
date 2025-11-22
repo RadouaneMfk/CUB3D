@@ -8,7 +8,7 @@
 # include <math.h>
 # include <sys/time.h>
 # include "../lib/libft.h"
-# include "MLX42/include/MLX42/MLX42.h"
+# include "MLX42/MLX42.h"
 
 #include <string.h>
 #include <ctype.h>
