@@ -1,5 +1,5 @@
 
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 
 int check_types(char *file)
@@ -29,7 +29,7 @@ void store_path_color(t_game *game)
         if(ft_strncmp(line,"F ",2) == 0)
         {
             game->flag_F++;
-            split_color = ft_split(ft_strchr(line,' '),',');
+            split_color = ft_split(ft_strchr1(line,' '),',');
             if(count_commas(line) != 2 )
             {
                 free_split(split_color);
@@ -41,7 +41,7 @@ void store_path_color(t_game *game)
         else if(ft_strncmp(line,"C ",2) == 0)
         {
             game->flag_C++;
-            split_color = ft_split(ft_strchr(line,' '),',');
+            split_color = ft_split(ft_strchr1(line,' '),',');
             if(count_commas(line) != 2)
             {
                 free_split(split_color); 

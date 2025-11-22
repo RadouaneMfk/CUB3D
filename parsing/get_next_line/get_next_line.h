@@ -11,10 +11,10 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-char	*ft_strdup(char *s1);
-char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strdup1(char *s1);
+char	*ft_strjoin1(char *s1, char *s2);
 char	*get_next_line(int fd);
-char	*ft_strchr(char *s, int c);
+char	*ft_strchr1(char *s, int c);
 char	*read_buffer(char *res, int fd);
 
 #endif

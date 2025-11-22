@@ -14,7 +14,7 @@ int	ft_strlen(char *s)
 	return (i);
 }
 
-char	*ft_strchr(char *s, int c)
+char	*ft_strchr1(char *s, int c)
 {
 	int		i;
 	char	b;
@@ -34,7 +34,7 @@ char	*ft_strchr(char *s, int c)
 	return (NULL);
 }
 
-char	*ft_strdup(char *s1)
+char	*ft_strdup1(char *s1)
 {
 	int		i;
 	char	*p;
@@ -56,7 +56,7 @@ char	*ft_strdup(char *s1)
 	return (p);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin1(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -64,9 +64,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		len;
 
 	if ((s1 == NULL || s1[0] == '\0') && s2 != NULL)
-		return (ft_strdup(s2));
+		return (ft_strdup1(s2));
 	if (s1 != NULL && s2 == NULL)
-		return (ft_strdup(s1));
+		return (ft_strdup1(s1));
 	len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	p = malloc(len * sizeof(char));
 	if (p == NULL)

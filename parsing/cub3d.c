@@ -1,6 +1,6 @@
 
 
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 int check_extension(char *file,char *ext)
 {
@@ -90,8 +90,6 @@ int check_element(t_game *game)
 }
 
 
-
-
 char *trim_spaces(char *str)
 {
     int start = 0;
@@ -120,7 +118,6 @@ int count_line(char **map,int i)
     }
     return(count);
 }
-
 
 int count_number(char **file)
 {
@@ -380,96 +377,9 @@ char **read_map(t_game *game,char *av)
     close(fd);
     return game->map; 
 }
-void ll()
-{
-    system("leaks cub3d");
-}
 
-int main(int ac,char **av)
-{
-    if(ac != 2)
-        return 1;
-    t_game *game = NULL;
-    game = malloc(sizeof(t_game));
-    // atexit(ll);
-    if(!game)
-        return 1;
-    char **new_map = NULL;
-    if(check_extension(av[1],".cub") == 0)
-        {
-            write(2,"extension is not correcte!!\n",28);
-            exit(1);
-        }
-        initisalitaion(game);
-        game->map = read_map(game,av[1]);
-        parse_texture_line(game);
-        parse_color_line(game);
 
-        // printf("SO: %s\n",game->path_so);
-        // printf("NO: %s\n",game->path_no);
-        // printf("WE: %s\n",game->path_we);
-        // printf("EA: %s\n",game->path_ea);
-       
-        if(check_element(game) == 0)
-        {
-            write(2,"element no vlaid in map\n",25);
-            exit(1);
-        }
-        int start = find_start_of_map(game);
-        int count_new_map = count_line(game->map,start);
-        if(start == -1)
-        {
-            write(2,"map invalide!!!\n",17);
-            exit(1);
-        }
-        new_map = malloc(sizeof(char *) * (count_new_map + 1));
-        int begin = 0;
-        while(game->map[start])
-        {
-            new_map[begin] = ft_strdup(game->map[start]);
-            start++;
-            begin++;
-        }
-        // printf("-->%p\n",(void *)&new_map[begin]);
-        new_map[begin] = NULL;
-        free_split(game->map);
-        game->map = new_map;
-        if(element_valid(new_map) == 0)
-        {
-            write(2,"element no valid in map !!\n",28);
-            exit(1);    
-        }
-        game->player_dir = check_palyer(new_map);
-        if(valid_walls(new_map) == 0)
-        {
-            write(2,"check valadition map!!\n",24);
-            exit(1);
-        }
-        if(check_first_char(new_map) == 0)
-        {
-            write(2,"fixe first char\n",17);
-            exit(1);
-        }
-        if(check_last_char(new_map) == 0)
-        {
-            write(2,"fixe last char\n",16);
-            exit(1);
-        }
-        if(valid_map(game) == 0)
-        {
-            write(2,"le map invalid!!\n",18);
-            exit(1);
-        }
-        print_map(new_map);
+// int main(int ac,char **av)
+// {
 
-        free_split(new_map);
-        // printf("----->test\n");
-        free_split(game->color_ceiling);
-        free_split(game->color_floor);
-        free(game->path_ea);
-        free(game->path_we);
-        free(game->path_so);
-        free(game->path_no);
-        free(game);
-    return 0;
-}
+// }

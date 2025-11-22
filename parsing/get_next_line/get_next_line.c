@@ -18,13 +18,13 @@ char	*read_buffer(char *res, int fd)
 			return (free(buffer), free(res), NULL);
 		buffer[nbr] = '\0';
 		if (res == NULL)
-			res = ft_strdup("");
+			res = ft_strdup1("");
 		if (!res)
 			return (free(buffer), NULL);
 		tmp = res;
-		res = ft_strjoin(res, buffer);
+		res = ft_strjoin1(res, buffer);
 		free(tmp);
-		if (nbr == 0 || ft_strchr(buffer, '\n'))
+		if (nbr == 0 || ft_strchr1(buffer, '\n'))
 			break ;
 	}
 	return (free(buffer), res);
@@ -67,7 +67,7 @@ char	*after_newline(char *res)
 		i++;
 	if (res[i] == '\0')
 		return (free(res), NULL);
-	n_line = ft_strdup(&res[i + 1]);
+	n_line = ft_strdup1(&res[i + 1]);
 	if (!n_line)
 	{
 		free(res);

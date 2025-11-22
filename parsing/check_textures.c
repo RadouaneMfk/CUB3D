@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../includes/cub3d.h"
 
 char  *texture_no_space(char *path)
 {
@@ -70,7 +70,7 @@ void store_path(t_game *game)
                 write(2,"invalid path NO",16);
                 exit(1);
             }
-            game->path_no = ft_strdup(trim_spaces(split[1]));
+            game->path_no = ft_strdup1(trim_spaces(split[1]));
             free_split(split);
             split = NULL;
         }
@@ -85,7 +85,7 @@ void store_path(t_game *game)
                 write(2,"invalid path SO\n",17);
                 exit(1);
             }
-            game->path_so = ft_strdup(trim_spaces(split[1]));
+            game->path_so = ft_strdup1(trim_spaces(split[1]));
             free_split(split);
             split = NULL;
         }
@@ -100,7 +100,7 @@ void store_path(t_game *game)
                 write(2,"invalid path EA\n",17);
                 exit(1);
             }
-            game->path_ea = ft_strdup(trim_spaces(split[1]));
+            game->path_ea = ft_strdup1(trim_spaces(split[1]));
             free_split(split);
             split = NULL;
         }
@@ -115,7 +115,7 @@ void store_path(t_game *game)
                 write(2,"invalid path WE\n",17);
                 exit(1);
             }
-            game->path_we = ft_strdup(trim_spaces(split[1]));
+            game->path_we = ft_strdup1(trim_spaces(split[1]));
             free_split(split);
             split = NULL;
         }
@@ -160,16 +160,16 @@ void parse_texture_line(t_game *game)
         write(2,"path not exist\n",16);
         exit(1);
     }
-    if(check_path_exist() == 0)
-    {
-        free(game->path_ea);
-        free(game->path_we);
-        free(game->path_so);
-        free(game->path_no);
-        free_split(game->map);
-        free(game);
-        write(2,"path not found\n",16);
-        exit(1);  
+    // if(check_path_exist() == 0)
+    // {
+    //     free(game->path_ea);
+    //     free(game->path_we);
+    //     free(game->path_so);
+    //     free(game->path_no);
+    //     free_split(game->map);
+    //     free(game);
+    //     write(2,"path not found\n",16);
+    //     exit(1);  
         
-    }
+    // }
 }
