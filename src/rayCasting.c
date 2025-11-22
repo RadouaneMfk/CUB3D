@@ -15,6 +15,7 @@ void	ft_cast_ray(int rayId, double angle, t_cube *game)
 
 void castRays(t_cube *game)
 {
+	//
 	int start_x = game->player->pos_x * (TILE_SIZE + 1);
 	int start_y = game->player->pos_y * (TILE_SIZE + 1);
 	int num_rays = WIDTH;
