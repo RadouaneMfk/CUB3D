@@ -125,6 +125,7 @@ void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
 		v->top = 0;
 	if (v->bottom >= HEIGHT)
 		v->bottom = HEIGHT - 1;
+	
 	ft_draw_line(rayId, v->top, rayId, v->bottom, 0xFFFFFFFF, g);
 	// ft_draw_line(MINIMAP_SCALE * v->player_px, MINIMAP_SCALE * v->player_py,
 	// 	MINIMAP_SCALE * v->WallHitX, MINIMAP_SCALE * v->WallHitY, 0xFF0000FF, g);
