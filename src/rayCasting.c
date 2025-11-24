@@ -22,7 +22,7 @@ void castRays(t_cube *game)
 	double ray_angle = game->player->rotate_Angle - (FOV / 2);
 
 	int rayId = 0;
-	while (rayId < num_rays)
+	while (rayId < WIDTH)
 	{
 		if (ray_angle < 0)
 			ray_angle += 2 * M_PI;
@@ -128,17 +128,8 @@ int main(int ac, char *av[])
             exit(1);
         }
 
-        // free_split(new_map);
-
-        printf("----->test\n");
-        free_split(cube->color_ceiling);
-        free_split(cube->color_floor);
-        free(cube->path_ea);
-        free(cube->path_we);
-        free(cube->path_so);
-        free(cube->path_no);
-        free(cube);
 	
+    // printf("%c\n", cube->player_dir);
 	game.map = cube->map;
 	game.player = malloc(sizeof(t_player));
 	if (!game.player)
@@ -150,5 +141,15 @@ int main(int ac, char *av[])
 	draw_map(game.map, &game);
 	mlx_loop_hook(game.mlx, update_player, &game);
     mlx_loop(game.mlx);
+
+        free_split(new_map);
+        // printf("----->test\n");
+        free_split(cube->color_ceiling);
+        free_split(cube->color_floor);
+        free(cube->path_ea);
+        free(cube->path_we);
+        free(cube->path_so);
+        free(cube->path_no);
+        free(cube);
     return 0;
 }

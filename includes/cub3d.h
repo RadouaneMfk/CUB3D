@@ -20,9 +20,6 @@
 #define TILE_SIZE 64
 #define PLAYER_SIZE 20
 #define FOV M_PI / 3
-#define MINIMAP_SCALE 0.2
-#define MINI_H 200
-#define MINI_W 200
 #define MINIMAP_TILE_SIZE 10
 
 typedef struct s_player
@@ -77,6 +74,7 @@ typedef struct s_var
 	double bottom;
 	double rayDistance;
 	double ray_angle;
+	int ceil_size;
 } t_var;
 
 typedef struct s_game

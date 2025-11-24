@@ -128,12 +128,12 @@ void draw_square_player(double x, double y, int size, int color, t_cube *game)
 	}
 }
 
-void draw_player(t_cube *game)
-{
-    double pixel_x;
-    double pixel_y;
+// void draw_player(t_cube *game)
+// {
+//     double pixel_x;
+//     double pixel_y;
 
-    pixel_x = game->player->pos_x * (TILE_SIZE + 1);
-    pixel_y = game->player->pos_y * (TILE_SIZE + 1);
-    draw_square_player(MINIMAP_SCALE * pixel_x, MINIMAP_SCALE * pixel_y, MINIMAP_SCALE * PLAYER_SIZE, 0xFF0000FF, game);
-}
+//     pixel_x = game->player->pos_x * (TILE_SIZE + 1);
+//     pixel_y = game->player->pos_y * (TILE_SIZE + 1);
+//     draw_square_player(MINIMAP_SCALE * pixel_x, MINIMAP_SCALE * pixel_y, MINIMAP_SCALE * PLAYER_SIZE, 0xFF0000FF, game);
+// }
