@@ -32,22 +32,22 @@ void draw_square(double x, double y, int size, int color, t_cube *game)
 	}
 }
 
-void ft_draw_line(double x0, double y0, double x1, double y1, int color, t_cube *game)
-{
-    double dx = x1 - x0;
-    double dy = y1 - y0;
-    double distance = sqrt(dx * dx + dy * dy);
-    double step_x = dx / distance;
-    double step_y = dy / distance;
+// void ft_draw_line(double x0, double y0, double x1, double y1, int color, t_cube *game)
+// {
+//     double dx = x1 - x0;
+//     double dy = y1 - y0;
+//     double distance = sqrt(dx * dx + dy * dy);
+//     double step_x = dx / distance;
+//     double step_y = dy / distance;
 
-    while (distance > 0)
-    {
-        mlx_put_pixel(game->img, (int)x0, (int)y0, color);
-        x0 += step_x;
-        y0 += step_y;
-        distance -= 1;
-    }
-}
+//     while (distance > 0)
+//     {
+//         mlx_put_pixel(game->img, (int)x0, (int)y0, color);
+//         x0 += step_x;
+//         y0 += step_y;
+//         distance -= 1;
+//     }
+// }
 
 double ft_distance(double x1, double y1, double x2, double y2)
 {

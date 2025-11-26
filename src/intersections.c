@@ -11,6 +11,7 @@ void	init_vars(t_var *v, t_cube *game)
 	while (game->map[v->map_height])
 		v->map_height++;
 	v->map_width = ft_strlen(game->map[0]);
+	// printf("%d\n", v->side_hit);
 }
 
 void	find_horizontal_hit(t_var *v, double a, t_cube *g)
@@ -92,13 +93,20 @@ void	find_vertical_hit(t_var *v, double a, t_cube *g)
 void	select_hit(t_var *v)
 {
 	if (v->HorzWallHit == 1)
+	{
+		// v->side_hit = HORIZONTAL;
 		v->HorzHitDistance = ft_distance(v->player_px, v->player_py,
 				v->HorzWallHit_x, v->HorzWallHit_y);
+	}
 	else
 		v->HorzHitDistance = 500000;
 	if (v->VertWallHit == 1)
+	{
+		// v->hit_offset = (int)v->WallHitY % TILE_SIZE;
+		// v->side_hit = VERTICAL;
 		v->VertHitDistance = ft_distance(v->player_px, v->player_py,
 				v->VertWallHit_x, v->VertWallHit_y);
+	}
 	else
 		v->VertHitDistance = 500000;
 	if (v->HorzHitDistance < v->VertHitDistance)
@@ -117,6 +125,7 @@ void	select_hit(t_var *v)
 
 void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
 {
+	int y = 0;
 	v->DistanceProjectionPlane = (WIDTH / 2) / tan(FOV / 2);
 	v->WallStripHeight = (v->ceil_size / (v->rayDistance * cos(ray_angle - g->player->rotate_Angle)))
 		* v->DistanceProjectionPlane;
@@ -126,7 +135,43 @@ void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
 		v->top = 0;
 	if (v->bottom >= HEIGHT)
 		v->bottom = HEIGHT - 1;
-	ft_draw_line(rayId, 0, rayId, v->top, 0x000000ff, g);
-	ft_draw_line(rayId, v->top, rayId, v->bottom, 0xFFFFFFFF - 60, g);
-	ft_draw_line(rayId, v->bottom, rayId, HEIGHT, 0x000000ff, g);
+	if (v->HorzWallHit)
+	{
+		v->side_hit = HORIZONTAL;
+		v->hit_offset = (int)v->WallHitX % TILE_SIZE;
+		if (sin(ray_angle) > 0)
+			g->texture = g->tex_north;
+		else
+			g->texture = g->tex_south;
+	}
+	else if (v->VertWallHit)
+	{
+		v->side_hit = VERTICAL;
+		v->hit_offset = (int)v->WallHitX % TILE_SIZE;
+		if (cos(ray_angle) > 0)
+			g->texture = g->tex_west;
+		else
+			g->texture = g->tex_east;
+	}
+	while (y < v->top)
+	{
+		mlx_put_pixel(g->img, rayId, y, 0x000000ff);
+		y++;
+	}
+	y = v->top;
+	while (y < v->bottom)
+	{
+		g->tex_x = v->hit_offset * g->texture->width / TILE_SIZE;
+		g->tex_y = ((y - v->top) / v->WallStripHeight) * g->texture->height;
+		g->pixel_index = (g->tex_y * g->texture->width + g->tex_x) * 4;
+		int color = ((g->pixel_index) << 24) | ((g->pixel_index + 1) << 16) | ((g->pixel_index + 2) << 8) | (g->pixel_index + 3);
+		mlx_put_pixel(g->img, rayId, y, color);
+		y++;
+	}
+	y = v->bottom;
+	while (y < HEIGHT)
+	{
+		mlx_put_pixel(g->img, rayId, y, 0x000000ff);
+		y++;
+	}
 }

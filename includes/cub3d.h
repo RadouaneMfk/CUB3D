@@ -21,6 +21,8 @@
 #define PLAYER_SIZE 20
 #define FOV M_PI / 3
 #define MINIMAP_TILE_SIZE 10
+#define VERTICAL 0
+#define HORIZONTAL 1
 
 typedef struct s_player
 {
@@ -39,11 +41,20 @@ typedef struct s_cube
 	mlx_t *mlx;
 	mlx_image_t *img;
 	t_player *player;
+	mlx_texture_t *tex_north;
+	mlx_texture_t *tex_south;
+	mlx_texture_t *tex_west;
+	mlx_texture_t *tex_east;
+	mlx_texture_t *texture;
+	int pixel_index;
+	double tex_x;
+	double tex_y;
 	char **map;
 } t_cube;
 
 typedef struct s_var
 {
+	int side_hit;
 	double x_intercept;
 	double y_intercept;
 	double x_step;
@@ -75,6 +86,7 @@ typedef struct s_var
 	double rayDistance;
 	double ray_angle;
 	int ceil_size;
+	double hit_offset;
 } t_var;
 
 typedef struct s_game

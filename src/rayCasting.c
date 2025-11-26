@@ -71,7 +71,6 @@ int main(int ac, char *av[])
     cube->map = read_map(cube,av[1]);
     parse_texture_line(cube);
     parse_color_line(cube);
-
         // printf("SO: %s\n",game->path_so);
         // printf("NO: %s\n",game->path_no);
         // printf("WE: %s\n",game->path_we);
@@ -127,8 +126,6 @@ int main(int ac, char *av[])
             write(2,"le map invalid!!\n",18);
             exit(1);
         }
-
-	
     // printf("%c\n", cube->player_dir);
 	game.map = cube->map;
 	game.player = malloc(sizeof(t_player));
@@ -138,18 +135,20 @@ int main(int ac, char *av[])
     game.img = mlx_new_image(game.mlx, WIDTH, HEIGHT);
     mlx_image_to_window(game.mlx , game.img, 0, 0);
 	init_player(game.map, &game);
+    game.tex_east = mlx_load_png("parsing/textures/east.png");
+    game.tex_west = mlx_load_png("parsing/textures/west.png");
+    game.tex_north = mlx_load_png("parsing/textures/north.png");
+    game.tex_south = mlx_load_png("parsing/textures/south.png");
 	draw_map(game.map, &game);
 	mlx_loop_hook(game.mlx, update_player, &game);
     mlx_loop(game.mlx);
-
-        free_split(new_map);
-        // printf("----->test\n");
-        free_split(cube->color_ceiling);
-        free_split(cube->color_floor);
-        free(cube->path_ea);
-        free(cube->path_we);
-        free(cube->path_so);
-        free(cube->path_no);
-        free(cube);
+    free_split(new_map);
+    free_split(cube->color_ceiling);
+    free_split(cube->color_floor);
+    free(cube->path_ea);
+    free(cube->path_we);
+    free(cube->path_so);
+    free(cube->path_no);
+    free(cube);
     return 0;
 }

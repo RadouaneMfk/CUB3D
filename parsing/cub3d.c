@@ -11,6 +11,7 @@ int check_extension(char *file,char *ext)
         return 0;
     return 1; 
 }
+
 int number_line(char *line)
 {
     int i  = 0;
