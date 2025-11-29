@@ -15,15 +15,17 @@
 #include <limits.h>
 #include "../parsing/get_next_line/get_next_line.h"
 
+
+#define MINIMAP_SCALE 0.2  // 20% de la taille originale
+// #define PLAYER_SIZE 4      // taille du point joueur sur la mini-map
 #define WIDTH 1080
 #define HEIGHT 720
 #define TILE_SIZE 64
 #define PLAYER_SIZE 20
 #define FOV M_PI / 3
-#define MINIMAP_SCALE 0.2
-#define MINI_H 200
-#define MINI_W 200
 #define MINIMAP_TILE_SIZE 10
+#define VERTICAL 0
+#define HORIZONTAL 1
 
 typedef struct s_player
 {
@@ -37,16 +39,40 @@ typedef struct s_player
 	int cursor_y;
 } t_player;
 
+typedef struct s_textures
+{
+	mlx_image_t *tex_no_img;
+	mlx_image_t *tex_so_img;
+	mlx_image_t *tex_we_img;
+	mlx_image_t *tex_ea_img;
+
+
+	mlx_texture_t *tex_no;
+	mlx_texture_t *tex_so;
+	mlx_texture_t *tex_we;
+	mlx_texture_t *tex_ea;
+}t_textures;
+
 typedef struct s_cube
 {
 	mlx_t *mlx;
 	mlx_image_t *img;
 	t_player *player;
+	mlx_texture_t *current_texture;
+	t_textures textures;
+	int pixel_index;
+	double tex_x;
+	double tex_y;
 	char **map;
 } t_cube;
 
+
+
+
+
 typedef struct s_var
 {
+	int side_hit;
 	double x_intercept;
 	double y_intercept;
 	double x_step;
@@ -77,12 +103,15 @@ typedef struct s_var
 	double bottom;
 	double rayDistance;
 	double ray_angle;
+	int ceil_size;
+	double hit_offset;
 } t_var;
+
+
+
 
 typedef struct s_game
 {
-    // mlx_t *mlx;
-    // t_textures textures;
     char **map;
     char *path_no;
     char *path_so;
@@ -105,6 +134,7 @@ typedef struct s_game
     int F_r;
     int F_g;
     int F_b;
+	t_textures textures;
 }   t_game;
 
 void	castRays(t_cube *game);
@@ -125,9 +155,9 @@ void	select_hit(t_var *v);
 void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle);
 void	ft_cast_ray(int rayId, double angle, t_cube *game);
 
-
 //parsing
 
+int convert_textures_to_img(t_game *game,t_cube *cube);
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -166,4 +196,11 @@ int empty_line(char **map);
 int valid_map(t_game *game);
 void initisalitaion(t_game *game);
 char **read_map(t_game *game,char *av);
+
+
+
+/******textures*/
+int upload_textures(t_game *game);
+int convert_textures_to_img(t_game *game,t_cube *cube);
+
 #endif

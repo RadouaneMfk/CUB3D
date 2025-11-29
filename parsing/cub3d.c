@@ -378,8 +378,3 @@ char **read_map(t_game *game,char *av)
     return game->map; 
 }
 
-
-// int main(int ac,char **av)
-// {
-
-// }
