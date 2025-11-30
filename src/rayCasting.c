@@ -56,26 +56,10 @@ int main(int ac, char *av[])
     t_cube game;
 	t_game *cube;
 
-	// char *test_map[] =
-	// {
-    // 	"11111111111111111",
-    // 	"10000000000000001",
-    // 	"10111111000000001",
-    // 	"10010001001000001",
-    // 	"10010001N110 00001",
-    // 	"10 000001000000000111",
-    // 	"101100000 00000001",
-    // 	"1011000 0000000001",
-    // 	"10110000000000001",
-    // 	"10001110110000001",
-	// 	"11111111111111111",
-	// 	NULL,
-	// };
 	if(ac != 2)
         return 1;
     cube = NULL;
     cube = malloc(sizeof(t_game));
-    // atexit(ll);
     if(!cube)
         return 1;
     char **new_map = NULL;
@@ -84,6 +68,7 @@ int main(int ac, char *av[])
         write(2,"extension is not correcte!!\n",28);
         exit(1);
     }
+
     initisalitaion(cube);
     cube->map = read_map(cube,av[1]);
     parse_texture_line(cube);
@@ -139,14 +124,11 @@ int main(int ac, char *av[])
     }
     
 	game.map = cube->map;
+    game.mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
+    init_textures(&game,cube);
 	game.player = malloc(sizeof(t_player));
 	if (!game.player)
 		return 1;
-    game.mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
-    if (!upload_textures(cube))
-        return (write(2, "upload_textures failed\n", 23), 1);
-    if (!convert_textures_to_img(cube, &game))
-        return (write(2, "convert_textures_to_img failed\n", 32), 1);
     game.img = mlx_new_image(game.mlx, WIDTH, HEIGHT);
     if(!game.img)
     {

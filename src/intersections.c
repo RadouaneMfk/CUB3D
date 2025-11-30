@@ -120,105 +120,81 @@ void	select_hit(t_var *v)
 	}
 
 }
+
+void draw_textured_wall(int rayId, t_var *v, t_cube *g)
+{
+    t_texture *tex = NULL;
+
+    // ===== 1. CHOISIS LA TEXTURE =====
+     if (v->HorzWallHit)
+    {
+        if ((int)floor(v->WallHitY) % TILE_SIZE == 0)
+            tex = &g->textures.no;
+        else
+            tex = &g->textures.so;
+    }
+	else
+    {
+        if ((int)floor(v->WallHitX) % TILE_SIZE == 0)
+            tex = &g->textures.we;
+        else
+            tex = &g->textures.ea;
+    }
+
+    // ===== 2. TEX_X =====
+    if (v->VertWallHit)
+        v->hit_offset = fmod(v->WallHitY, TILE_SIZE);
+    else if (v->HorzWallHit)
+        v->hit_offset = fmod(v->WallHitX, TILE_SIZE);
+
+    int tex_x_i = (int)((v->hit_offset /  TILE_SIZE) * tex->width);
+    if (tex_x_i >= tex->width)
+        tex_x_i = tex->width - 1;
+
+    // ===== 3. Use mlx_image pixels (safe) =====
+    uint8_t *pixels = (uint8_t *)tex->img->pixels;
+
+    double step = 1.0 * tex->height / v->WallStripHeight;
+	double texPos = (v->top - HEIGHT / 2 + v->WallStripHeight / 2) * step;
+    for (int y = v->top; y < v->bottom; y++)
+    {
+        int texY = (int)texPos;
+		texPos += step;
+        int index = (texY * tex->width + tex_x_i) * 4;
+		// uint32_t color = tex->path[index][tex->height * texY + tex_x_i];
+        uint8_t r = pixels[index + 0];
+        uint8_t g_col = pixels[index + 1];
+        uint8_t b = pixels[index + 2];
+        uint8_t a = pixels[index + 3];
+
+        uint32_t color = (r << 24) | (g_col << 16) | (b << 8) | a;
+        mlx_put_pixel(g->img, rayId, y, color);
+    }
+}
+
 void compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
 {
-    // if (!g || !g->player || !g->img)
-    //     return;
-    // 1️⃣ Calcul de la distance de projection et hauteur du mur
     v->DistanceProjectionPlane = (WIDTH / 2) / tan(FOV / 2);
     v->WallStripHeight = ((TILE_SIZE + 1) / (v->rayDistance * cos(ray_angle - g->player->rotate_Angle)))
-                         * v->DistanceProjectionPlane;
+        * v->DistanceProjectionPlane;
+
     v->top = (HEIGHT / 2) - (v->WallStripHeight / 2);
     v->bottom = (HEIGHT / 2) + (v->WallStripHeight / 2);
-    if (v->top < 0) v->top = 0;
-    if (v->bottom >= HEIGHT) v->bottom = HEIGHT - 1;
-    // 2️⃣ Dessiner le plafond (couleur fixe)
+
+    if (v->top < 0)
+        v->top = 0;
+    if (v->bottom >= HEIGHT)
+        v->bottom = HEIGHT - 1;
+
+    // color ceiling
     for (int y = 0; y < v->top; y++)
         mlx_put_pixel(g->img, rayId, y, 0x00CCCCFF);
 
-    // // 3️⃣ Choisir la texture du mur avant la boucle
-    // if (v->HorzWallHit)
-    // {
-    //     v->side_hit = HORIZONTAL;
-    //     v->hit_offset = (int)v->WallHitX % TILE_SIZE;
-    //     if (v->hit_offset < 0) v->hit_offset += TILE_SIZE;
-    //     g->current_texture = (sin(ray_angle) > 0) ? g->textures.tex_no : g->textures.tex_so;
-    // }
-    // else if (v->VertWallHit)
-    // {
-    //     v->side_hit = VERTICAL;
-    //     v->hit_offset = (int)v->WallHitY % TILE_SIZE;
-    //     if (v->hit_offset < 0) v->hit_offset += TILE_SIZE;
-    //     g->current_texture = (cos(ray_angle) > 0) ? g->textures.tex_we : g->textures.tex_ea;
-    // }
-    // else
-    // {
-    //     // Pas de mur touché → rien à dessiner
-    //     for (int y = v->top; y < HEIGHT; y++)
-    //         mlx_put_pixel(g->img, rayId, y, 0x777700FF); // sol
-    //     return;
-    // }
+    // draw textured wall
+    draw_textured_wall(rayId, v, g);
 
-    // // 4️⃣ Vérifier que la texture est valide
-    // if (!g->current_texture || !g->current_texture->pixels) {
-    // 	printf("ERROR: texture null ou pixels null!\n");
-    // 	return;
-	// }
-    // // 5️⃣ Dessiner le mur avec la texture
-    // for (int y = v->top; y < v->bottom; y++)
-    // {
-    //     double tex_x = v->hit_offset * g->current_texture->width / TILE_SIZE;
-    //     double tex_y = ((y - v->top) / v->WallStripHeight) * g->current_texture->height;
-
-    //     uint32_t tex_x_i = (uint32_t)tex_x;
-    //     uint32_t tex_y_i = (uint32_t)tex_y;
-
-    //     if (tex_x_i >= g->current_texture->width)  
-	// 		tex_x_i = g->current_texture->width - 1;
-    //     if (tex_y_i >= g->current_texture->height) 
-	// 		tex_y_i = g->current_texture->height - 1;
-
-    //     int pixel_index = (tex_y_i * g->current_texture->width + tex_x_i) * 4;
-
-    //     // Sécurité : vérifier que pixel_index est dans le tableau
-	// 	size_t max = g->current_texture->width * g->current_texture->height * 4;
-    //     if ((size_t)pixel_index + 3 >= max)
-    //         continue;
-
-    //     int color = (g->current_texture->pixels[pixel_index] << 24)
-    //               | (g->current_texture->pixels[pixel_index + 1] << 16)
-    //               | (g->current_texture->pixels[pixel_index + 2] << 8)
-    //               | (g->current_texture->pixels[pixel_index + 3]);
-
-    //     mlx_put_pixel(g->img, rayId, y, color);
-    // }
-	// printf("----\n");
-	ft_draw_line(rayId, v->top, rayId, v->bottom, 0xFFFFFFFF, g);
-    // 6️⃣ Dessiner le sol (couleur fixe)
+    // color floor
     for (int y = v->bottom; y < HEIGHT; y++)
         mlx_put_pixel(g->img, rayId, y, 0x777700FF);
 }
 
-
-// void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
-// {
-// 	v->DistanceProjectionPlane = (WIDTH / 2) / tan(FOV / 2);
-// 	v->WallStripHeight = ((TILE_SIZE + 1) / (v->rayDistance * cos(ray_angle - g->player->rotate_Angle)))
-// 		* v->DistanceProjectionPlane;
-// 	v->top = (HEIGHT / 2) - (v->WallStripHeight / 2);
-// 	v->bottom = (HEIGHT / 2) + (v->WallStripHeight / 2);
-// 	if (v->top < 0)
-// 		v->top = 0;
-// 	if (v->bottom >= HEIGHT)
-// 		v->bottom = HEIGHT - 1;
-// 	// color top avant murs
-// 	for (int y = 0; y < v->top; y++)
-//     	mlx_put_pixel(g->img, rayId, y, 0x00CCCCFF);
-// 	// desing murs
-// 	ft_draw_line(rayId, v->top, rayId, v->bottom, 0xFFFFFFFF, g);
-
-// 	// color bottom apres murs
-// 	for (int y = v->bottom; y < HEIGHT; y++)
-//     	mlx_put_pixel(g->img, rayId, y, 0x777700FF);
-
-// }

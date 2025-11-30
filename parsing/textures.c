@@ -1,49 +1,46 @@
 #include "../includes/cub3d.h"
 
-int upload_textures(t_game *game)
+void assign_texture_path(t_cube *cube,t_game *g)
 {
-    game->textures.tex_no = mlx_load_png(game->path_no);
-    if(!game->textures.tex_no)
-        return(write(2, "Failed to load texture NO\n", 26),0);
-    game->textures.tex_so = mlx_load_png(game->path_so);
-    if(!game->textures.tex_so)
-        return(write(2, "Failed to load texture SO\n", 26),0);
-    game->textures.tex_ea = mlx_load_png(game->path_ea);
-    if(!game->textures.tex_ea)
-        return(write(2, "Failed to load texture EA\n", 26),0);
-    game->textures.tex_we = mlx_load_png(game->path_we);
-    if(!game->textures.tex_we)
-        return(write(2, "Failed to load texture WE\n", 26),0);
-    return 1;
+    cube->textures.no.path = g->path_no;
+    cube->textures.so.path = g->path_so;
+    cube->textures.we.path = g->path_we;
+    cube->textures.ea.path = g->path_ea;
 }
 
-int convert_textures_to_img(t_game *game,t_cube *cube)
+void load_texture(t_cube *cube, t_texture *tex)
 {
-    game->textures.tex_no_img = mlx_texture_to_image(cube->mlx,game->textures.tex_no);
-    if(!game->textures.tex_no_img)
-        return(write(2,"Failed to convert NO\n",21),0);
-    game->textures.tex_so_img = mlx_texture_to_image(cube->mlx,game->textures.tex_so);
-    if(!game->textures.tex_so_img)
-        return(write(2,"Failed to convert SO\n",21),0);
-    game->textures.tex_we_img = mlx_texture_to_image(cube->mlx,game->textures.tex_we);
-    if(!game->textures.tex_we_img)
-        return(write(2,"Failed to convert WE\n",21),0);
-    game->textures.tex_ea_img = mlx_texture_to_image(cube->mlx,game->textures.tex_ea);
-    if(!game->textures.tex_ea_img)
-        return(write(2,"Failed to convert EA\n",21),0);
-    
-    return 1;
+    if(!tex->path)
+    {
+        printf("Texture path missing!\n");
+        exit(1);
+    }
+    tex->tex = mlx_load_png(tex->path);
+    if(!tex->tex)
+    {
+        printf("Failed to load texture: %s\n", tex->path);
+        exit(1);
+    }
+    tex->width = tex->tex->width;
+    tex->height = tex->tex->height;
+    tex->img = mlx_texture_to_image(cube->mlx,tex->tex);
+    if(!tex->img)
+    {
+        printf("Failed to convert texture: %s\n", tex->path);
+        exit(1);
+    }
+    // mlx_image_to_window(cube->mlx,tex->img , -10000,-10000);
+}
+void load_all_textures(t_cube *cube)
+{
+    load_texture(cube,&cube->textures.no);
+    load_texture(cube,&cube->textures.so);
+    load_texture(cube,&cube->textures.we);
+    load_texture(cube,&cube->textures.ea);
 }
 
-
-// void free_png(t_game *game)
-// {
-//     mlx_delete_texture(game->textures.so.tex);
-//     game->textures.so.tex =NULL;
-//     mlx_delete_texture(game->textures.no.tex);
-//     game->textures.no.tex =NULL;
-//     mlx_delete_texture(game->textures.we.tex);
-//     game->textures.we.tex =NULL;
-//     mlx_delete_texture(game->textures.ea.tex);
-//     game->textures.ea.tex =NULL;
-// }
+void init_textures(t_cube *cube,t_game *game)
+{
+    assign_texture_path(cube, game);
+	load_all_textures(cube);
+}

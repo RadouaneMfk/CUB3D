@@ -39,18 +39,21 @@ typedef struct s_player
 	int cursor_y;
 } t_player;
 
+typedef struct s_texture
+{
+	char *path;
+	mlx_texture_t *tex;
+	mlx_image_t *img;
+	int width;
+	int height;
+}t_texture;
+
 typedef struct s_textures
 {
-	mlx_image_t *tex_no_img;
-	mlx_image_t *tex_so_img;
-	mlx_image_t *tex_we_img;
-	mlx_image_t *tex_ea_img;
-
-
-	mlx_texture_t *tex_no;
-	mlx_texture_t *tex_so;
-	mlx_texture_t *tex_we;
-	mlx_texture_t *tex_ea;
+	t_texture no;
+	t_texture so;
+	t_texture we;
+	t_texture ea;
 }t_textures;
 
 typedef struct s_cube
@@ -58,7 +61,6 @@ typedef struct s_cube
 	mlx_t *mlx;
 	mlx_image_t *img;
 	t_player *player;
-	mlx_texture_t *current_texture;
 	t_textures textures;
 	int pixel_index;
 	double tex_x;
@@ -67,8 +69,31 @@ typedef struct s_cube
 } t_cube;
 
 
-
-
+typedef struct s_game
+{
+    char **map;
+    char *path_no;
+    char *path_so;
+    char *path_we;
+    char *path_ea;
+    int floor_color;
+    int ceiling_color;
+    char player_dir;
+    char **color_floor;
+    char **color_ceiling;
+    int flag_F;
+    int flag_C;
+    int flag_no;
+    int flag_so;
+    int flag_we;
+    int flag_ea;
+    int C_r;
+    int C_g;
+    int C_b;
+    int F_r;
+    int F_g;
+    int F_b;
+}   t_game;
 
 typedef struct s_var
 {
@@ -82,7 +107,7 @@ typedef struct s_var
 	double nextVert_x;
 	double nextVert_y;
 	double HorzWallHit_x;
-	double HorzWallHit_y;
+	double HorzWallHit_y; 
 	double VertWallHit_x;
 	double VertWallHit_y;
 	double HorzHitDistance;
@@ -110,32 +135,6 @@ typedef struct s_var
 
 
 
-typedef struct s_game
-{
-    char **map;
-    char *path_no;
-    char *path_so;
-    char *path_we;
-    char *path_ea;
-    int floor_color;
-    int ceiling_color;
-    char player_dir;
-    char **color_floor;
-    char **color_ceiling;
-    int flag_F;
-    int flag_C;
-    int flag_no;
-    int flag_so;
-    int flag_we;
-    int flag_ea;
-    int C_r;
-    int C_g;
-    int C_b;
-    int F_r;
-    int F_g;
-    int F_b;
-	t_textures textures;
-}   t_game;
 
 void	castRays(t_cube *game);
 void	draw_line(t_cube *game);
@@ -157,7 +156,6 @@ void	ft_cast_ray(int rayId, double angle, t_cube *game);
 
 //parsing
 
-int convert_textures_to_img(t_game *game,t_cube *cube);
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -200,7 +198,6 @@ char **read_map(t_game *game,char *av);
 
 
 /******textures*/
-int upload_textures(t_game *game);
-int convert_textures_to_img(t_game *game,t_cube *cube);
+void init_textures(t_cube *cube,t_game *game);
 
 #endif

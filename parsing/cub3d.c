@@ -358,6 +358,7 @@ void initisalitaion(t_game *game)
     game->color_ceiling = NULL;
     game->flag_C = 0;
     game->flag_F = 0;
+    // game->textures.tex_ea
 }
 char **read_map(t_game *game,char *av)
 {
