@@ -47,22 +47,22 @@ void draw_map(char **map, t_cube *game)
 
 void draw_black_cover(char **map, t_cube *game)
 {
-    int i;
-    int j;
-    int screen_x;
-    int screen_y;
+    int i, j;
+    double screen_x, screen_y;
 
-	i = 0;
+    i = 0;
     while (map[i])
     {
         j = 0;
         while (map[i][j])
         {
-            screen_x = j * (TILE_SIZE + 1);
-            screen_y = i * (TILE_SIZE + 1);
-            draw_square(MINIMAP_SCALE * screen_x, MINIMAP_SCALE * screen_y, MINIMAP_SCALE * (TILE_SIZE + 1), 0x000000FF, game);
+            screen_x = j * TILE_SIZE * MINIMAP_SCALE;
+            screen_y = i * TILE_SIZE * MINIMAP_SCALE;
+
+            draw_square(screen_x, screen_y, TILE_SIZE * MINIMAP_SCALE, 0x000000FF, game); // couleur mur
             j++;
         }
         i++;
     }
 }
+
