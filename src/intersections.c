@@ -120,38 +120,38 @@ void	select_hit(t_var *v)
 	}
 
 }
-
+// 
 void draw_textured_wall(int rayId, t_var *v, t_cube *g)
 {
     t_texture *tex = NULL;
 
-    // ===== 1. CHOISIS LA TEXTURE =====
-     if (v->HorzWallHit)
-    {
-        if ((int)floor(v->WallHitY) % TILE_SIZE == 0)
-            tex = &g->textures.no;
-        else
-            tex = &g->textures.so;
-    }
-	else
-    {
-        if ((int)floor(v->WallHitX) % TILE_SIZE == 0)
-            tex = &g->textures.we;
-        else
-            tex = &g->textures.ea;
-    }
+    // find each textures used in horz or vertical
+   	if (v->HorzHitDistance < v->VertHitDistance)  
+	{
+		if (sin(v->ray_angle) > 0)
+			tex = &g->textures.so;  
+		else                         
+			tex = &g->textures.no;  
+	}
+	else 
+	{
+		if (cos(v->ray_angle) > 0)  
+			tex = &g->textures.ea;  
+		else                        
+			tex = &g->textures.we; 
+	}
 
-    // ===== 2. TEX_X =====
-    if (v->VertWallHit)
-        v->hit_offset = fmod(v->WallHitY, TILE_SIZE);
-    else if (v->HorzWallHit)
-        v->hit_offset = fmod(v->WallHitX, TILE_SIZE);
+    // find position hit in wall
+    if (v->VertHitDistance < v->HorzHitDistance)  
+        v->hit_offset = fmod(v->WallHitY, v->ceil_size);
+    else  
+        v->hit_offset = fmod(v->WallHitX, v->ceil_size);
 
-    int tex_x_i = (int)((v->hit_offset /  TILE_SIZE) * tex->width);
+    //find position in textures and used mlx image 
+    int tex_x_i = (int)((v->hit_offset / v->ceil_size) * tex->width);
     if (tex_x_i >= tex->width)
         tex_x_i = tex->width - 1;
 
-    // ===== 3. Use mlx_image pixels (safe) =====
     uint8_t *pixels = (uint8_t *)tex->img->pixels;
 
     double step = 1.0 * tex->height / v->WallStripHeight;
@@ -161,7 +161,6 @@ void draw_textured_wall(int rayId, t_var *v, t_cube *g)
         int texY = (int)texPos;
 		texPos += step;
         int index = (texY * tex->width + tex_x_i) * 4;
-		// uint32_t color = tex->path[index][tex->height * texY + tex_x_i];
         uint8_t r = pixels[index + 0];
         uint8_t g_col = pixels[index + 1];
         uint8_t b = pixels[index + 2];
@@ -188,7 +187,7 @@ void compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
 
     // color ceiling
     for (int y = 0; y < v->top; y++)
-        mlx_put_pixel(g->img, rayId, y, 0x00CCCCFF);
+        mlx_put_pixel(g->img, rayId, y, 0x00CCCCAA);
 
     // draw textured wall
     draw_textured_wall(rayId, v, g);

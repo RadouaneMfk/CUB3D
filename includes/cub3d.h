@@ -199,5 +199,5 @@ char **read_map(t_game *game,char *av);
 
 /******textures*/
 void init_textures(t_cube *cube,t_game *game);
-
+void draw_textured_wall(int rayId, t_var *v, t_cube *g);
 #endif
