@@ -143,7 +143,7 @@ void draw_textured_wall(int rayId, t_var *v, t_cube *g)
 			tex = &g->textures.we; 
 	}
 
-    // find position hit in wall
+    // find position hit in wall 
     if (v->flag == 0)  
         v->hit_offset = fmod(v->WallHitY, v->ceil_size);
     else  
