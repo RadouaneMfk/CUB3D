@@ -108,12 +108,14 @@ void	select_hit(t_var *v)
 		v->VertHitDistance = 500000;
 	if (v->HorzHitDistance < v->VertHitDistance)
 	{
+		v->flag = 1;
 		v->WallHitX = v->HorzWallHit_x;
 		v->WallHitY = v->HorzWallHit_y;
 		v->rayDistance = v->HorzHitDistance;
 	}
 	else
 	{
+		v->flag = 0;
 		v->WallHitX = v->VertWallHit_x;
 		v->WallHitY = v->VertWallHit_y;
 		v->rayDistance = v->VertHitDistance;
@@ -129,7 +131,7 @@ void draw_textured_wall(int rayId, t_var *v, t_cube *g)
    	if (v->HorzHitDistance < v->VertHitDistance)  
 	{
 		if (sin(v->ray_angle) > 0)
-			tex = &g->textures.so;  
+			tex = &g->textures.so;
 		else                         
 			tex = &g->textures.no;  
 	}
@@ -142,7 +144,7 @@ void draw_textured_wall(int rayId, t_var *v, t_cube *g)
 	}
 
     // find position hit in wall
-    if (v->VertHitDistance < v->HorzHitDistance)  
+    if (v->flag == 0)  
         v->hit_offset = fmod(v->WallHitY, v->ceil_size);
     else  
         v->hit_offset = fmod(v->WallHitX, v->ceil_size);
@@ -153,13 +155,14 @@ void draw_textured_wall(int rayId, t_var *v, t_cube *g)
         tex_x_i = tex->width - 1;
 
     uint8_t *pixels = (uint8_t *)tex->img->pixels;
-
     double step = 1.0 * tex->height / v->WallStripHeight;
 	double texPos = (v->top - HEIGHT / 2 + v->WallStripHeight / 2) * step;
     for (int y = v->top; y < v->bottom; y++)
     {
         int texY = (int)texPos;
+
 		texPos += step;
+		// overflow index -----
         int index = (texY * tex->width + tex_x_i) * 4;
         uint8_t r = pixels[index + 0];
         uint8_t g_col = pixels[index + 1];

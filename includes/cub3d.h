@@ -130,6 +130,7 @@ typedef struct s_var
 	double ray_angle;
 	int ceil_size;
 	double hit_offset;
+	int flag;
 } t_var;
 
 

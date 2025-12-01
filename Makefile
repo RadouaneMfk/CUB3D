@@ -8,7 +8,7 @@ SRC = src/intersections.c src/Draw_map.c src/rayCasting.c src/ft_player.c src/dr
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I includes -I /Users/haboucha/.brew/MLX42/include #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I includes -I /Users/haboucha/.brew/MLX42/include #-fsanitize=address -g
 
 # Librairies
 MLX_LIB   = -L /Users/haboucha/.brew/MLX42/build -lmlx42
