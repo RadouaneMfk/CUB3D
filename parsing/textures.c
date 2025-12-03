@@ -8,6 +8,7 @@ void assign_texture_path(t_cube *cube,t_game *g)
     cube->textures.ea.path = g->path_ea;
 }
 
+
 void load_texture(t_cube *cube, t_texture *tex)
 {
     if(!tex->path)
