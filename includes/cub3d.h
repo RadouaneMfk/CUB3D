@@ -165,17 +165,16 @@ int	ft_atoi(const char *str);
 int	ft_isdigit(int c);
 int ft_strcmp(char *s1,char *s2);
 char *trim_spaces(char *str);
-void parse_color_line(t_game *game);
+int parse_color_line(t_game *game);
 int count_number(char **file);
 int count_commas(char *file);
 char *skip_spaces(char *str);
 int count_line(char **map,int i);
 int check_extension(char *file,char *ext);
-void parse_texture_line(t_game *game);
+int parse_texture_line(t_game *game);
 void free_split(char **file);
 int check_extension(char *file,char *ext);
 int number_line(char *line);
-void print_map(char **file);
 char *skip_spaces(char *str);
 void free_split(char **file);
 int check_element(t_game *game);
@@ -195,10 +194,22 @@ int empty_line(char **map);
 int valid_map(t_game *game);
 void initisalitaion(t_game *game);
 char **read_map(t_game *game,char *av);
-
-
+char	*texture_no_space(char *path);
+int	store_path_no(t_game *game, char *line);
+int	store_path_so(t_game *game, char *line);
+int	store_path_ea(t_game *game, char *line);
+int	store_path_we(t_game *game, char *line);
+int store_color_floor(t_game *game,char *line);
+int store_color_ceiling(t_game *game,char *line);
+int store_path_color(t_game *game);
+int	check_element_valid_in_map(char *line);
+int	check_element_start_map(char *line);
+void	aide_player(char **map, int *count, char *player);
+int	aide_map(t_game *game, int i, int j);
+int	valid_map(t_game *game);
+int	check_start_map(char *line);
 
 /******textures*/
 void init_textures(t_cube *cube,t_game *game);
-void draw_textured_wall(int rayId, t_var *v, t_cube *g);
+void draw_textured_wall(int rayId, t_var *v, t_cube *g,double ray_angle);
 #endif
