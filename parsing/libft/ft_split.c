@@ -1,15 +1,15 @@
-
 #include "../../includes/cub3d.h"
 
 static int	ft_count(char *str, char set)
 {
 	int	i;
 	int	count;
+
 	count = 0;
 	i = 0;
 	while (str[i])
 	{
-		if ((str[i] != set) &&  (i == 0 || str[i - 1] == set))
+		if ((str[i] != set) && (i == 0 || str[i - 1] == set))
 			count++;
 		i++;
 	}
@@ -49,14 +49,13 @@ static void	free_tab(char **tab, int j)
 
 static int	allocation_tab(char **tab, const char *s, char c)
 {
-	int	i; 
-	int	j; 
+	int	i;
+	int	j;
 	int	start;
 
 	i = ((j = 0), 0);
 	while (s[i])
 	{
-
 		if (s[i] != c)
 		{
 			start = i;

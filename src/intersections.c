@@ -123,47 +123,120 @@ void	select_hit(t_var *v)
 
 }
 // 
-void draw_textured_wall(int rayId, t_var *v, t_cube *g)
+// void draw_textured_wall(int rayId, t_var *v, t_cube *g)
+// {
+//     t_texture *tex = NULL;
+
+//     // find each textures used in horz or vertical
+//    	if (v->HorzHitDistance < v->VertHitDistance)  
+// 	{
+// 		if (sin(v->ray_angle) > 0)
+// 			tex = &g->textures.so;
+// 		else                         
+// 			tex = &g->textures.no;  
+// 	}
+// 	else 
+// 	{
+// 		if (cos(v->ray_angle) > 0)  
+// 			tex = &g->textures.ea;  
+// 		else                        
+// 			tex = &g->textures.we; 
+// 	}
+
+// 	// sOuth and west look not good
+//     // find position hit in wall 
+//     if (v->flag == 0)  
+//         v->hit_offset = fmod(v->WallHitY, v->ceil_size);
+//     else  
+//         v->hit_offset = fmod(v->WallHitX, v->ceil_size);
+
+//     //find position in textures and used mlx image 
+//     int texX = (int)((v->hit_offset / TILE_SIZE) * tex->width);
+//     if (v->flag == 0 || v->flag == 1)
+//         texX = tex->width - texX  - 1;
+
+//     uint8_t *pixels = (uint8_t *)tex->img->pixels;
+//     double step = 1.0 * tex->height / v->WallStripHeight;
+// 	double texPos = (v->top - HEIGHT / 2 + v->WallStripHeight / 2) * step;
+//     for (int y = v->top; y < v->bottom; y++)
+//     {
+//         int texY = (int)texPos;
+
+// 		texPos += step;
+// 		// overflow index -----
+//         int index = (texY * tex->width + texX) * 4;
+//         uint8_t r = pixels[index + 0];
+//         uint8_t g_col = pixels[index + 1];
+//         uint8_t b = pixels[index + 2];
+//         uint8_t a = pixels[index + 3];
+
+//         uint32_t color = (r << 24) | (g_col << 16) | (b << 8) | a;
+//         mlx_put_pixel(g->img, rayId, y, color);
+//     }
+// }
+void draw_textured_wall(int rayId, t_var *v, t_cube *g,double ray_angle)
 {
     t_texture *tex = NULL;
 
-    // find each textures used in horz or vertical
-   	if (v->HorzHitDistance < v->VertHitDistance)  
-	{
-		if (sin(v->ray_angle) > 0)
-			tex = &g->textures.so;
-		else                         
-			tex = &g->textures.no;  
-	}
-	else 
-	{
-		if (cos(v->ray_angle) > 0)  
-			tex = &g->textures.ea;  
-		else                        
-			tex = &g->textures.we; 
-	}
+    // اختيار التكستشر حسب الاتجاه
+    if (v->HorzHitDistance < v->VertHitDistance)  
+    {
+        if (sin(ray_angle) > 0)
+            tex = &g->textures.so;  // جنوب
+        else                         
+            tex = &g->textures.no;  // شمال
+    }
+    else  
+    {
+        if (cos(ray_angle) > 0)  
+            tex = &g->textures.ea;  // شرق
+        else                        
+            tex = &g->textures.we;  // غرب
+    }
 
-    // find position hit in wall 
-    if (v->flag == 0)  
+    // حساب الموقع في الحيط
+    if (v->flag == VERTICAL)  
         v->hit_offset = fmod(v->WallHitY, v->ceil_size);
     else  
         v->hit_offset = fmod(v->WallHitX, v->ceil_size);
 
-    //find position in textures and used mlx image 
-    int tex_x_i = (int)((v->hit_offset / v->ceil_size) * tex->width);
-    if (tex_x_i >= tex->width)
-        tex_x_i = tex->width - 1;
+    // حساب إحداثية X في التكستشر
+    int texX = (int)((v->hit_offset / TILE_SIZE) * tex->width);
+    
+    // اقلب حسب الاتجاه
+    if (v->HorzHitDistance < v->VertHitDistance)  // Horizontal wall (N/S)
+    {
+        if (sin(ray_angle) > 0)  // South - اقلبو
+            texX = tex->width - texX - 1;
+        // North - ماتقلبوش (خدام مزيان)
+    }
+    else  // Vertical wall (E/W)
+    {
+        if (cos(ray_angle) < 0)  // West - اقلبو (بدلنا الشرط!)
+            texX = tex->width - texX - 1;
+        // East - ماتقلبوش
+    }
 
     uint8_t *pixels = (uint8_t *)tex->img->pixels;
     double step = 1.0 * tex->height / v->WallStripHeight;
-	double texPos = (v->top - HEIGHT / 2 + v->WallStripHeight / 2) * step;
+    double texPos = (v->top - HEIGHT / 2 + v->WallStripHeight / 2) * step;
+    
     for (int y = v->top; y < v->bottom; y++)
     {
         int texY = (int)texPos;
-
-		texPos += step;
-		// overflow index -----
-        int index = (texY * tex->width + tex_x_i) * 4;
+        texPos += step;
+        
+        // التحقق من الحدود
+        if (texY < 0) 
+			texY = 0;
+        if (texY >= tex->height) 
+			texY = tex->height - 1;
+        if (texX < 0) 
+			texX = 0;
+        if (texX >= tex->width) 
+			texX = tex->width - 1;
+        
+        int index = (texY * tex->width + texX) * 4;
         uint8_t r = pixels[index + 0];
         uint8_t g_col = pixels[index + 1];
         uint8_t b = pixels[index + 2];
@@ -173,9 +246,11 @@ void draw_textured_wall(int rayId, t_var *v, t_cube *g)
         mlx_put_pixel(g->img, rayId, y, color);
     }
 }
-
 void compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
 {
+	
+	// v->ray_angle = ray_angle;// add this 
+
     v->DistanceProjectionPlane = (WIDTH / 2) / tan(FOV / 2);
     v->WallStripHeight = ((TILE_SIZE + 1) / (v->rayDistance * cos(ray_angle - g->player->rotate_Angle)))
         * v->DistanceProjectionPlane;
@@ -193,10 +268,10 @@ void compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
         mlx_put_pixel(g->img, rayId, y, 0x00CCCCAA);
 
     // draw textured wall
-    draw_textured_wall(rayId, v, g);
+    draw_textured_wall(rayId, v, g,ray_angle);
 
     // color floor
     for (int y = v->bottom; y < HEIGHT; y++)
-        mlx_put_pixel(g->img, rayId, y, 0x777700FF);
+        mlx_put_pixel(g->img, rayId, y, 0x00d7b796);
 }
 

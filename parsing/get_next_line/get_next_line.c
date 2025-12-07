@@ -1,4 +1,3 @@
-
 #include "get_next_line.h"
 
 char	*read_buffer(char *res, int fd)
