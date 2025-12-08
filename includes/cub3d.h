@@ -15,6 +15,9 @@
 #include <limits.h>
 #include "../parsing/get_next_line/get_next_line.h"
 
+
+#define MINIMAP_SCALE 0.2  // 20% de la taille originale
+// #define PLAYER_SIZE 4      // taille du point joueur sur la mini-map
 #define WIDTH 1080
 #define HEIGHT 720
 #define TILE_SIZE 64
@@ -36,63 +39,38 @@ typedef struct s_player
 	int cursor_y;
 } t_player;
 
+typedef struct s_texture
+{
+	char *path;
+	mlx_texture_t *tex;
+	mlx_image_t *img;
+	int width;
+	int height;
+} t_texture;
+
+typedef struct s_textures
+{
+	t_texture no;
+	t_texture so;
+	t_texture we;
+	t_texture ea;
+}t_textures;
+
 typedef struct s_cube
 {
 	mlx_t *mlx;
 	mlx_image_t *img;
 	t_player *player;
-	mlx_texture_t *tex_north;
-	mlx_texture_t *tex_south;
-	mlx_texture_t *tex_west;
-	mlx_texture_t *tex_east;
-	mlx_texture_t *texture;
+	t_textures textures;
 	int pixel_index;
 	double tex_x;
 	double tex_y;
 	char **map;
 } t_cube;
 
-typedef struct s_var
-{
-	int side_hit;
-	double x_intercept;
-	double y_intercept;
-	double x_step;
-	double y_step;
-	double nextHorz_x;
-	double nextHorz_y;
-	double nextVert_x;
-	double nextVert_y;
-	double HorzWallHit_x;
-	double HorzWallHit_y;
-	double VertWallHit_x;
-	double VertWallHit_y;
-	double HorzHitDistance;
-	double VertHitDistance;
-	double WallHitX;
-	double WallHitY;
-	double player_px;
-	double player_py;
-	int HorzWallHit;
-	int VertWallHit;
-	int map_height;
-	int map_width;
-	int map_x;
-	int map_y;
-	double DistanceProjectionPlane;
-	double WallStripHeight;
-	double top;
-	double bottom;
-	double rayDistance;
-	double ray_angle;
-	int ceil_size;
-	double hit_offset;
-} t_var;
 
 typedef struct s_game
 {
-    // mlx_t *mlx;
-    // t_textures textures;
     char **map;
     char *path_no;
     char *path_so;
@@ -117,6 +95,48 @@ typedef struct s_game
     int F_b;
 }   t_game;
 
+typedef struct s_var
+{
+	int side_hit;
+	double x_intercept;
+	double y_intercept;
+	double x_step;
+	double y_step;
+	double nextHorz_x;
+	double nextHorz_y;
+	double nextVert_x;
+	double nextVert_y;
+	double HorzWallHit_x;
+	double HorzWallHit_y; 
+	double VertWallHit_x;
+	double VertWallHit_y;
+	double HorzHitDistance;
+	double VertHitDistance;
+	double WallHitX;
+	double WallHitY;
+	double player_px;
+	double player_py;
+	int HorzWallHit;
+	int VertWallHit;
+	int map_height;
+	int map_width;
+	int map_x;
+	int map_y;
+	double DistanceProjectionPlane;
+	double WallStripHeight;
+	double top;
+	double bottom;
+	double rayDistance;
+	double ray_angle;
+	int ceil_size;
+	double hit_offset;
+	int flag;
+} t_var;
+
+
+
+
+
 void	castRays(t_cube *game);
 void	draw_line(t_cube *game);
 void	draw_square(double x, double y, int size, int color, t_cube *game);
@@ -134,7 +154,6 @@ void	find_vertical_hit(t_var *v, double a, t_cube *g);
 void	select_hit(t_var *v);
 void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle);
 void	ft_cast_ray(int rayId, double angle, t_cube *game);
-
 
 //parsing
 
@@ -176,4 +195,10 @@ int empty_line(char **map);
 int valid_map(t_game *game);
 void initisalitaion(t_game *game);
 char **read_map(t_game *game,char *av);
+
+
+
+/******textures*/
+void init_textures(t_cube *cube,t_game *game);
+void draw_textured_wall(int rayId, t_var *v, t_cube *g);
 #endif

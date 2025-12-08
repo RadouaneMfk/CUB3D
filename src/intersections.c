@@ -1,5 +1,6 @@
 #include "../includes/cub3d.h"
 
+
 void	init_vars(t_var *v, t_cube *game)
 {
 	v->ceil_size = TILE_SIZE;
@@ -11,7 +12,6 @@ void	init_vars(t_var *v, t_cube *game)
 	while (game->map[v->map_height])
 		v->map_height++;
 	v->map_width = ft_strlen(game->map[0]);
-	// printf("%d\n", v->side_hit);
 }
 
 void	find_horizontal_hit(t_var *v, double a, t_cube *g)
@@ -108,226 +108,163 @@ void	select_hit(t_var *v)
 		v->VertHitDistance = 500000;
 	if (v->HorzHitDistance < v->VertHitDistance)
 	{
+		v->flag = 1;
 		v->WallHitX = v->HorzWallHit_x;
 		v->WallHitY = v->HorzWallHit_y;
 		v->rayDistance = v->HorzHitDistance;
 	}
 	else
 	{
+		v->flag = 0;
 		v->WallHitX = v->VertWallHit_x;
 		v->WallHitY = v->VertWallHit_y;
 		v->rayDistance = v->VertHitDistance;
 	}
-}
 
-void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
-{
-	int y = 0;
-	v->DistanceProjectionPlane = (WIDTH / 2) / tan(FOV / 2);
-	v->WallStripHeight = (v->ceil_size / (v->rayDistance * cos(ray_angle - g->player->rotate_Angle)))
-		* v->DistanceProjectionPlane;
-	v->top = (HEIGHT / 2) - (v->WallStripHeight / 2);
-	v->bottom = (HEIGHT / 2) + (v->WallStripHeight / 2);
-	if (v->top < 0)
-		v->top = 0;
-	if (v->bottom >= HEIGHT)
-		v->bottom = HEIGHT - 1;
-	if (v->HorzWallHit)
-	{
-		v->side_hit = HORIZONTAL;
-		v->hit_offset = (int)v->WallHitX % v->ceil_size;
-		if (v->hit_offset < 0)
-			v->hit_offset += v->ceil_size;
-		if (sin(ray_angle) > 0)
-			g->texture = g->tex_north;
-		else
-			g->texture = g->tex_south;
-	}
-	else if (v->VertWallHit)
-	{
-		v->side_hit = VERTICAL;
-		v->hit_offset = (int)v->WallHitY % v->ceil_size;
-		if (v->hit_offset < 0)
-			v->hit_offset += v->ceil_size;
-		if (cos(ray_angle) > 0)
-			g->texture = g->tex_west;
-		else
-			g->texture = g->tex_east;
-	}
-	else
-		return ;
-	while (y < v->top)
-	{
-		mlx_put_pixel(g->img, rayId, y, 0x000000ff);
-		y++;
-	}
-	y = v->top;
-	while (y < v->bottom)
-	{
-		g->tex_x = v->hit_offset * g->texture->width / TILE_SIZE;
-		g->tex_y = ((y - v->top) / v->WallStripHeight) * g->texture->height;
-		g->pixel_index = (g->tex_y * g->texture->width + g->tex_x) * 4;
-		int color = (g->texture->pixels[g->pixel_index]) + (g->texture->pixels[g->pixel_index + 1]) + (g->texture->pixels[g->pixel_index + 2]) + (g->texture->pixels[g->pixel_index + 3]);
-		int color2 = ((g->texture->pixels[g->pixel_index]) << 24) | ((g->texture->pixels[g->pixel_index + 1]) << 16) | ((g->texture->pixels[g->pixel_index + 2]) << 8) | (g->texture->pixels[g->pixel_index + 3]);
-		// printf("-->%d\n", color);
-		mlx_put_pixel(g->img, rayId, y, color2);
-		y++;
-	}
-	y = v->bottom;
-	while (y < HEIGHT)
-	{
-		mlx_put_pixel(g->img, rayId, y, 0x000000ff);
-		y++;
-	}
 }
-
-// void compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
+// 
+// void draw_textured_wall(int rayId, t_var *v, t_cube *g)
 // {
-//     int y = 0;
+//     t_texture *tex = NULL;
 
-//     /* projection calculations (unchanged logic) */
-//     v->DistanceProjectionPlane = (WIDTH / 2) / tan(FOV / 2);
-//     /* correct for fish-eye by dividing by cos(ray - player_angle) */
-//     v->WallStripHeight = (v->ceil_size / (v->rayDistance * cos(ray_angle - g->player->rotate_Angle)))
-//         * v->DistanceProjectionPlane;
-//     v->top = (HEIGHT / 2) - (v->WallStripHeight / 2);
-//     v->bottom = (HEIGHT / 2) + (v->WallStripHeight / 2);
-//     if (v->top < 0)
-//         v->top = 0;
-//     if (v->bottom >= HEIGHT)
-//         v->bottom = HEIGHT - 1;
+//     // find each textures used in horz or vertical
+//    	if (v->HorzHitDistance < v->VertHitDistance)  
+// 	{
+// 		if (sin(v->ray_angle) > 0)
+// 			tex = &g->textures.so;
+// 		else                         
+// 			tex = &g->textures.no;  
+// 	}
+// 	else 
+// 	{
+// 		if (cos(v->ray_angle) > 0)  
+// 			tex = &g->textures.ea;  
+// 		else                        
+// 			tex = &g->textures.we; 
+// 	}
 
-//     /* choose which texture and compute hit offset (ensure all units are pixels) */
-//     /* hit_offset must be distance along the wall in PIXELS [0 .. ceil_size) */
-//     if (v->HorzWallHit)
+// 	// sOuth and west look not good
+//     // find position hit in wall 
+//     if (v->flag == 0)  
+//         v->hit_offset = fmod(v->WallHitY, v->ceil_size);
+//     else  
+//         v->hit_offset = fmod(v->WallHitX, v->ceil_size);
+
+//     //find position in textures and used mlx image 
+//     int texX = (int)((v->hit_offset / TILE_SIZE) * tex->width);
+//     if (v->flag == 0 || v->flag == 1)
+//         texX = tex->width - texX  - 1;
+
+//     uint8_t *pixels = (uint8_t *)tex->img->pixels;
+//     double step = 1.0 * tex->height / v->WallStripHeight;
+// 	double texPos = (v->top - HEIGHT / 2 + v->WallStripHeight / 2) * step;
+//     for (int y = v->top; y < v->bottom; y++)
 //     {
-//         v->side_hit = HORIZONTAL;
-//         /* WallHitX and WallHitY are in pixels — offset along wall for horizontal hit is X */
-//         v->hit_offset = ((int)v->WallHitX) % v->ceil_size;
-//         if (v->hit_offset < 0)
-//             v->hit_offset += v->ceil_size;
-//         if (sin(ray_angle) > 0)
-//             g->texture = g->tex_north;
-//         else
-//             g->texture = g->tex_south;
-//     }
-//     else if (v->VertWallHit)
-//     {
-//         v->side_hit = VERTICAL;
-//         /* for vertical hit the varying coord along the wall is Y */
-//         v->hit_offset = ((int)v->WallHitY) % v->ceil_size;
-//         if (v->hit_offset < 0)
-//             v->hit_offset += v->ceil_size;
-//         if (cos(ray_angle) > 0)
-//             g->texture = g->tex_west;
-//         else
-//             g->texture = g->tex_east;
-//     }
-//     else
-//     {
-//         /* no hit: draw background and return early */
-//         ft_draw_line(rayId, 0, rayId, HEIGHT, 0xFF00FF00, g); /* debug color */
-//         return;
-//     }
+//         int texY = (int)texPos;
 
-//     /* draw ceiling (top) */
-//     while (y < v->top)
-//     {
-//         mlx_put_pixel(g->img, rayId, y, 0x000000ff);
-//         y++;
-//     }
+// 		texPos += step;
+// 		// overflow index -----
+//         int index = (texY * tex->width + texX) * 4;
+//         uint8_t r = pixels[index + 0];
+//         uint8_t g_col = pixels[index + 1];
+//         uint8_t b = pixels[index + 2];
+//         uint8_t a = pixels[index + 3];
 
-//     /* prepare texture sampling */
-//     mlx_texture_t *tex = g->texture;
-//     int tex_w = 0;
-//     int tex_h = 0;
-//     unsigned char *pixels = NULL;
-//     size_t tex_pixels_len = 0;
-
-//     if (tex)
-//     {
-//         tex_w = tex->width;
-//         tex_h = tex->height;
-//         pixels = tex->pixels;
-//         /* pixels length should be tex_w * tex_h * 4 */
-//         tex_pixels_len = (size_t)tex_w * (size_t)tex_h * 4ULL;
-//     }
-
-//     /* clamp ceil_size to avoid division by zero or weird math */
-//     if (v->ceil_size <= 0)
-//         v->ceil_size = TILE_SIZE > 0 ? TILE_SIZE : 64;
-
-//     /* draw wall slice with texture sampling */
-//     y = v->top;
-//     while (y < v->bottom)
-//     {
-//         /* map hit_offset in [0, ceil_size) to texture x in [0, tex_w) */
-//         int tex_x = 0;
-//         int tex_y = 0;
-
-//         if (tex && tex_w > 0)
-//         {
-//             double fx = ((double)v->hit_offset / (double)v->ceil_size) * (double)tex_w;
-//             /* ensure fx in [0, tex_w) and convert to integer coordinate */
-//             if (fx < 0.0)
-//                 fx = 0.0;
-//             if (fx >= (double)tex_w)
-//                 fx = (double)tex_w - 1.0;
-//             tex_x = (int)fx;
-//         }
-
-//         /* map screen y into texture y */
-//         if (tex && tex_h > 0)
-//         {
-//             double column_height = (double)(v->bottom - v->top);
-//             if (column_height <= 0.0)
-//                 column_height = 1.0;
-//             double rel = ((double)(y - v->top) / column_height); /* [0,1) */
-//             double fy = rel * (double)tex_h;
-//             if (fy < 0.0)
-//                 fy = 0.0;
-//             if (fy >= (double)tex_h)
-//                 fy = (double)tex_h - 1.0;
-//             tex_y = (int)fy;
-//         }
-
-//         /* sample pixel safely */
-//         unsigned int color = 0x00FF00FF; /* fallback magenta debug color */
-//         if (pixels && tex_w > 0 && tex_h > 0)
-//         {
-//             size_t pindex = ((size_t)tex_y * (size_t)tex_w + (size_t)tex_x) * 4ULL;
-//             if (pindex + 3 < tex_pixels_len)
-//             {
-//                 /* pixels layout: R, G, B, A (typical from LodePNG / MLX) */
-//                 unsigned int R = (unsigned int)pixels[pindex + 0];
-//                 unsigned int G = (unsigned int)pixels[pindex + 1];
-//                 unsigned int B = (unsigned int)pixels[pindex + 2];
-//                 unsigned int A = (unsigned int)pixels[pindex + 3];
-
-//                 /* MLX expects 0xAARRGGBB */
-//                 color = (A << 24) | (R << 16) | (G << 8) | B;
-//             }
-//             else
-//             {
-//                 /* out-of-bounds: use debug color */
-//                 color = 0xFFFF00FF; /* magenta */
-//             }
-//         }
-//         else
-//         {
-//             /* no texture: use plain white for walls so you can see them */
-//             color = 0xFFFFFFFF;
-//         }
-
+//         uint32_t color = (r << 24) | (g_col << 16) | (b << 8) | a;
 //         mlx_put_pixel(g->img, rayId, y, color);
-//         y++;
-//     }
-
-//     /* draw floor (bottom) */
-//     y = v->bottom;
-//     while (y < HEIGHT)
-//     {
-//         mlx_put_pixel(g->img, rayId, y, 0x000000ff);
-//         y++;
 //     }
 // }
+void draw_textured_wall(int rayId, t_var *v, t_cube *g)
+{
+    t_texture *tex = NULL;
+
+    // اختيار التكستشر حسب الاتجاه
+    if (v->HorzHitDistance < v->VertHitDistance)  
+    {
+        if (sin(v->ray_angle) > 0)
+            tex = &g->textures.so;  // جنوب
+        else                         
+            tex = &g->textures.no;  // شمال
+    }
+    else  
+    {
+        if (cos(v->ray_angle) > 0)  
+            tex = &g->textures.ea;  // شرق
+        else                        
+            tex = &g->textures.we;  // غرب
+    }
+
+    // حساب الموقع في الحيط
+    if (v->flag == VERTICAL)  
+        v->hit_offset = fmod(v->WallHitY, v->ceil_size);
+    else  
+        v->hit_offset = fmod(v->WallHitX, v->ceil_size);
+
+    // حساب إحداثية X في التكستشر
+    int texX = (int)((v->hit_offset / TILE_SIZE) * tex->width);
+    
+    // اقلب حسب الاتجاه
+    if (v->HorzHitDistance < v->VertHitDistance)  // Horizontal wall (N/S)
+    {
+        if (sin(v->ray_angle) > 0)  // South - اقلبو
+            texX = tex->width - texX - 1;
+        // North - ماتقلبوش (خدام مزيان)
+    }
+    else  // Vertical wall (E/W)
+    {
+        if (cos(v->ray_angle) < 0)  // West - اقلبو (بدلنا الشرط!)
+            texX = tex->width - texX - 1;
+        // East - ماتقلبوش
+    }
+
+    uint8_t *pixels = (uint8_t *)tex->img->pixels;
+    double step = 1.0 * tex->height / v->WallStripHeight;
+    double texPos = (v->top - HEIGHT / 2 + v->WallStripHeight / 2) * step;
+    
+    for (int y = v->top; y < v->bottom; y++)
+    {
+        int texY = (int)texPos;
+        texPos += step;
+        
+        // التحقق من الحدود
+        if (texY < 0) texY = 0;
+        if (texY >= tex->height) texY = tex->height - 1;
+        if (texX < 0) texX = 0;
+        if (texX >= tex->width) texX = tex->width - 1;
+        
+        int index = (texY * tex->width + texX) * 4;
+        uint8_t r = pixels[index + 0];
+        uint8_t g_col = pixels[index + 1];
+        uint8_t b = pixels[index + 2];
+        uint8_t a = pixels[index + 3];
+
+        uint32_t color = (r << 24) | (g_col << 16) | (b << 8) | a;
+        mlx_put_pixel(g->img, rayId, y, color);
+    }
+}
+void compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
+{
+	v->ray_angle = ray_angle;
+    v->DistanceProjectionPlane = (WIDTH / 2) / tan(FOV / 2);
+    v->WallStripHeight = ((TILE_SIZE + 1) / (v->rayDistance * cos(ray_angle - g->player->rotate_Angle)))
+        * v->DistanceProjectionPlane;
+
+    v->top = (HEIGHT / 2) - (v->WallStripHeight / 2);
+    v->bottom = (HEIGHT / 2) + (v->WallStripHeight / 2);
+
+    if (v->top < 0)
+        v->top = 0;
+    if (v->bottom >= HEIGHT)
+        v->bottom = HEIGHT - 1;
+
+    // color ceiling
+    for (int y = 0; y < v->top; y++)
+        mlx_put_pixel(g->img, rayId, y, 0x00CCCCAA);
+
+    // draw textured wall
+    draw_textured_wall(rayId, v, g);
+
+    // color floor
+    for (int y = v->bottom; y < HEIGHT; y++)
+        mlx_put_pixel(g->img, rayId, y, 0x777700FF);
+}
