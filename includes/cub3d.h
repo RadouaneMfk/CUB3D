@@ -16,8 +16,7 @@
 #include "../parsing/get_next_line/get_next_line.h"
 
 
-#define MINIMAP_SCALE 0.2  // 20% de la taille originale
-// #define PLAYER_SIZE 4      // taille du point joueur sur la mini-map
+#define MINIMAP_SCALE 0.2
 #define WIDTH 1080
 #define HEIGHT 720
 #define TILE_SIZE 64
@@ -46,7 +45,7 @@ typedef struct s_texture
 	mlx_image_t *img;
 	int width;
 	int height;
-} t_texture;
+}t_texture;
 
 typedef struct s_textures
 {
@@ -118,8 +117,6 @@ typedef struct s_var
 	double player_py;
 	int HorzWallHit;
 	int VertWallHit;
-	int map_height;
-	int map_width;
 	int map_x;
 	int map_y;
 	double DistanceProjectionPlane;
@@ -131,6 +128,28 @@ typedef struct s_var
 	int ceil_size;
 	double hit_offset;
 	int flag;
+	int	map_height;
+	int	map_width;
+	int	i;
+    int	x;
+    int	y;
+	int visible;
+	int player_x;
+	int player_y;
+	int start_x;
+	int start_y;
+	int end_x;
+	int end_y;
+	int minimap_x;
+	int minimap_y;
+	double next_posx;
+    double next_posy;
+    double move_speed;
+    double radius;
+	double walk;
+	int center_x;
+	int center_y;
+	double delta;
 } t_var;
 
 
@@ -139,11 +158,10 @@ typedef struct s_var
 
 void	castRays(t_cube *game);
 void	draw_line(t_cube *game);
-void	draw_square(double x, double y, int size, int color, t_cube *game);
+void	draw_square(t_var *var, int size, int color, t_cube *game);
 void	ft_draw_line(double x0, double y0, double x1, double y1, int color, t_cube *game);
 double	ft_distance(double x1, double y1, double x2, double y2);
 void	draw_player(t_cube *game);
-void	draw_square_player(double x, double y, int size, int color, t_cube *game);
 void	update_player(void *param);
 void	init_player(char **map, t_cube *cube);
 void	draw_map(char **map, t_cube *game);
@@ -165,17 +183,16 @@ int	ft_atoi(const char *str);
 int	ft_isdigit(int c);
 int ft_strcmp(char *s1,char *s2);
 char *trim_spaces(char *str);
-void parse_color_line(t_game *game);
+int parse_color_line(t_game *game);
 int count_number(char **file);
 int count_commas(char *file);
 char *skip_spaces(char *str);
 int count_line(char **map,int i);
 int check_extension(char *file,char *ext);
-void parse_texture_line(t_game *game);
+int parse_texture_line(t_game *game);
 void free_split(char **file);
 int check_extension(char *file,char *ext);
 int number_line(char *line);
-void print_map(char **file);
 char *skip_spaces(char *str);
 void free_split(char **file);
 int check_element(t_game *game);
@@ -195,10 +212,22 @@ int empty_line(char **map);
 int valid_map(t_game *game);
 void initisalitaion(t_game *game);
 char **read_map(t_game *game,char *av);
-
-
+char	*texture_no_space(char *path);
+int	store_path_no(t_game *game, char *line);
+int	store_path_so(t_game *game, char *line);
+int	store_path_ea(t_game *game, char *line);
+int	store_path_we(t_game *game, char *line);
+int store_color_floor(t_game *game,char *line);
+int store_color_ceiling(t_game *game,char *line);
+int store_path_color(t_game *game);
+int	check_element_valid_in_map(char *line);
+int	check_element_start_map(char *line);
+void	aide_player(char **map, int *count, char *player);
+int	aide_map(t_game *game, int i, int j);
+int	valid_map(t_game *game);
+int	check_start_map(char *line);
 
 /******textures*/
 void init_textures(t_cube *cube,t_game *game);
-void draw_textured_wall(int rayId, t_var *v, t_cube *g);
+void draw_textured_wall(int rayId, t_var *v, t_cube *g,double ray_angle);
 #endif
