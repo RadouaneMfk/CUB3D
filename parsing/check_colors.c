@@ -47,7 +47,7 @@ int	color_floor(t_game *game)
 	game->F_b = ft_atoi(game->color_floor[2]);
 	if ((game->F_r >= 0 && game->F_g >= 0 && game->F_b >= 0)
 		&& (game->F_r <= 255 && game->F_g <= 255 && game->F_b <= 255))
-		game->floor_color = (game->F_r << 16) + (game->F_g << 8) + game->F_b;
+		game->floor_color = (game->F_r << 16) | (game->F_g << 8) | game->F_b;
 	else
 		return (0);
 	return (1);
@@ -70,7 +70,7 @@ int	color_ceiling(t_game *game)
 	game->C_b = ft_atoi(game->color_ceiling[2]);
 	if ((game->C_r >= 0 && game->C_g >= 0 && game->C_b >= 0)
 		&& (game->C_r <= 255 && game->C_g <= 255 && game->C_b <= 255))
-		game->ceiling_color = (game->C_r << 16) + (game->C_g << 8) + game->C_b;
+		game->ceiling_color = (game->C_r << 16) | (game->C_g << 8) | game->C_b;
 	else
 		return (0);
 	return (1);

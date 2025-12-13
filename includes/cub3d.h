@@ -56,17 +56,6 @@ typedef struct s_textures
 	t_texture ea;
 }t_textures;
 
-typedef struct s_cube
-{
-	mlx_t *mlx;
-	mlx_image_t *img;
-	t_player *player;
-	t_textures textures;
-	int pixel_index;
-	double tex_x;
-	double tex_y;
-	char **map;
-} t_cube;
 
 
 typedef struct s_game
@@ -94,6 +83,18 @@ typedef struct s_game
     int F_g;
     int F_b;
 }   t_game;
+typedef struct s_cube
+{
+	mlx_t *mlx;
+	mlx_image_t *img;
+	t_player *player;
+	t_textures textures;
+	int pixel_index;
+	double tex_x;
+	double tex_y;
+	char **map;
+	t_game *game;
+} t_cube;
 
 typedef struct s_var
 {
@@ -204,6 +205,8 @@ int store_color_ceiling(t_game *game,char *line);
 int store_path_color(t_game *game);
 int	check_element_valid_in_map(char *line);
 int	check_element_start_map(char *line);
+int	color_ceiling(t_game *game);
+int	color_floor(t_game *game);
 void	aide_player(char **map, int *count, char *player);
 int	aide_map(t_game *game, int i, int j);
 int	valid_map(t_game *game);

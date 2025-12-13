@@ -169,8 +169,8 @@ int main(int ac, char *av[])
         write(2,"le map invalid!!\n",18);
         exit(1);
     }
-    
 	game.map = cube->map;
+    game.game = cube;
     game.mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
     init_textures(&game,cube);
 	game.player = malloc(sizeof(t_player));
@@ -187,7 +187,6 @@ int main(int ac, char *av[])
 	draw_map(game.map, &game);
 	mlx_loop_hook(game.mlx, update_player, &game);
     mlx_loop(game.mlx);
-  
     free_split(new_map);
     clean_up(cube);
     // free_split(cube->color_ceiling);

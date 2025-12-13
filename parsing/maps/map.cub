@@ -4,8 +4,8 @@ EA  ./textures/east.png
 WE  ./textures/west.png 
 SO  ./textures/south.png
 
-F  16, 55, 255 
-C 45, 5, 44
+F  100, 12, 100 
+C 22, 1, 100
 
 
    11111111111111111

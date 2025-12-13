@@ -265,13 +265,13 @@ void compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
 
     // color ceiling
     for (int y = 0; y < v->top; y++)
-        mlx_put_pixel(g->img, rayId, y, 0x00CCCCAA);
+        mlx_put_pixel(g->img, rayId, y,g->game->ceiling_color);
 
     // draw textured wall
     draw_textured_wall(rayId, v, g,ray_angle);
 
     // color floor
     for (int y = v->bottom; y < HEIGHT; y++)
-        mlx_put_pixel(g->img, rayId, y, 0x00d7b796);
+        mlx_put_pixel(g->img, rayId, y,g->game->floor_color);
 }
 
