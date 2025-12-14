@@ -211,8 +211,9 @@ void	aide_player(char **map, int *count, char *player);
 int	aide_map(t_game *game, int i, int j);
 int	valid_map(t_game *game);
 int	check_start_map(char *line);
-
+void	free_all_textures(t_cube *cube);
+void	free_texture(t_cube *cube, t_texture *tex);
 /******textures*/
-void init_textures(t_cube *cube,t_game *game);
+int init_textures(t_cube *cube,t_game *game);
 void draw_textured_wall(int rayId, t_var *v, t_cube *g,double ray_angle);
 #endif

@@ -172,14 +172,34 @@ int main(int ac, char *av[])
 	game.map = cube->map;
     game.game = cube;
     game.mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
-    init_textures(&game,cube);
+    if(!game.mlx)
+    {
+        clean_up(cube);
+        write(2,"Erreur\n",8);
+        write(2,"MLX init Failed\n",24);
+        return 1;
+    }
+    if(!init_textures(&game,cube))
+    {
+        clean_up(cube);
+        write(2,"Erreur\n",8);
+        return 1;
+    }
 	game.player = malloc(sizeof(t_player));
 	if (!game.player)
+    {
+        free_all_textures(&game);
+        clean_up(cube);
 		return 1;
+    }
     game.img = mlx_new_image(game.mlx, WIDTH, HEIGHT);
     if(!game.img)
     {
-        printf("Erreur : impossible de créer l'image MLX !\n");
+        free(game.player);
+        free_all_textures(&game);
+        clean_up(cube);
+        write(2,"Erreur\n",8);
+        write(2,"Failed to create image\n",24);
         return 1 ;
     }
     mlx_image_to_window(game.mlx ,game.img, 0, 0);
@@ -187,6 +207,8 @@ int main(int ac, char *av[])
 	draw_map(game.map, &game);
 	mlx_loop_hook(game.mlx, update_player, &game);
     mlx_loop(game.mlx);
+    free_all_textures(&game);
+    free(game.player);
     free_split(new_map);
     clean_up(cube);
     // free_split(cube->color_ceiling);

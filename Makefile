@@ -5,7 +5,7 @@ SRC = src/intersections.c src/Draw_map.c src/rayCasting.c src/ft_player.c src/dr
 		parsing/cub3d.c parsing/libft/ft_split.c parsing/libft/ft_strncmp.c parsing/libft/ft_isspace.c parsing/libft/ft_atoi.c \
 		parsing/libft/ft_isdigit.c parsing/libft/ft_strcmp.c parsing/check_colors.c parsing/check_textures.c parsing/textures.c \
 		parsing/check_textures1.c parsing/check_colors1.c parsing/count_utils.c parsing/utils_map.c parsing/utils_map1.c \
-		parsing/utils.c 
+		parsing/utils.c parsing/free_textures.c
  
 
 OBJ = $(SRC:.c=.o)
