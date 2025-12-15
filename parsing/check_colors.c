@@ -70,7 +70,7 @@ int	color_ceiling(t_game *game)
 	game->C_b = ft_atoi(game->color_ceiling[2]);
 	if ((game->C_r >= 0 && game->C_g >= 0 && game->C_b >= 0)
 		&& (game->C_r <= 255 && game->C_g <= 255 && game->C_b <= 255))
-		game->ceiling_color = (game->C_r << 16) + (game->C_g << 8) + game->C_b;
+		game->ceiling_color = (game->C_r << 16) | (game->C_g << 8) | game->C_b;
 	else
 		return (0);
 	return (1);

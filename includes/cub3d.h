@@ -15,10 +15,9 @@
 #include <limits.h>
 #include "../parsing/get_next_line/get_next_line.h"
 
-
 #define MINIMAP_SCALE 0.2
-#define WIDTH 1080
-#define HEIGHT 720
+#define MIN_W 100
+#define MIN_H 100
 #define TILE_SIZE 64
 #define PLAYER_SIZE 20
 #define FOV M_PI / 3
@@ -45,6 +44,18 @@ typedef struct s_texture
 	mlx_image_t *img;
 	int width;
 	int height;
+	uint8_t		r;
+    uint8_t		g_col;
+    uint8_t		b;
+    uint8_t		a;
+    uint32_t	color;
+	uint8_t		*pixels;
+	int			texX;
+	int			texY;
+	int			index;
+	double		step;
+    double		texPos;
+	int			y;
 }t_texture;
 
 typedef struct s_textures
@@ -54,18 +65,6 @@ typedef struct s_textures
 	t_texture we;
 	t_texture ea;
 }t_textures;
-
-typedef struct s_cube
-{
-	mlx_t *mlx;
-	mlx_image_t *img;
-	t_player *player;
-	t_textures textures;
-	int pixel_index;
-	double tex_x;
-	double tex_y;
-	char **map;
-} t_cube;
 
 
 typedef struct s_game
@@ -93,6 +92,21 @@ typedef struct s_game
     int F_g;
     int F_b;
 }   t_game;
+
+typedef struct s_cube
+{
+	t_game *cube;
+	mlx_t *mlx;
+	mlx_image_t *img;
+	t_player *player;
+	t_textures textures;
+	int pixel_index;
+	double tex_x;
+	double tex_y;
+	char **map;
+	int	win_w;
+	int win_h;
+} t_cube;
 
 typedef struct s_var
 {
@@ -172,7 +186,13 @@ void	find_vertical_hit(t_var *v, double a, t_cube *g);
 void	select_hit(t_var *v);
 void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle);
 void	ft_cast_ray(int rayId, double angle, t_cube *game);
-
+void	init_vars(t_var *v, t_cube *game);
+void	check_horizontal_intercept(t_var *v, double a, t_cube *g);
+void	find_horizontal_hit(t_var *v, double a, t_cube *g);
+void	check_vertical_intercept(t_var *v, double a, t_cube *g);
+void	find_vertical_hit(t_var *v, double a, t_cube *g);
+void	calcule_hit_ditance(t_var *v);
+void	init_player(char **map, t_cube *cube);
 //parsing
 
 char	**ft_split(char const *s, char c);
@@ -226,8 +246,10 @@ void	aide_player(char **map, int *count, char *player);
 int	aide_map(t_game *game, int i, int j);
 int	valid_map(t_game *game);
 int	check_start_map(char *line);
+void	free_all_textures(t_cube *cube);
+void	free_texture(t_cube *cube, t_texture *tex);
 
 /******textures*/
-void init_textures(t_cube *cube,t_game *game);
+int init_textures(t_cube *cube,t_game *game);
 void draw_textured_wall(int rayId, t_var *v, t_cube *g,double ray_angle);
 #endif
