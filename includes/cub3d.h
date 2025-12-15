@@ -91,6 +91,7 @@ typedef struct s_game
     int F_r;
     int F_g;
     int F_b;
+	char	**new_map;
 }   t_game;
 
 typedef struct s_cube
@@ -100,9 +101,6 @@ typedef struct s_cube
 	mlx_image_t *img;
 	t_player *player;
 	t_textures textures;
-	int pixel_index;
-	double tex_x;
-	double tex_y;
 	char **map;
 	int	win_w;
 	int win_h;
@@ -168,18 +166,12 @@ typedef struct s_var
 
 
 
-
-
 void	castRays(t_cube *game);
-void	draw_line(t_cube *game);
 void	draw_square(t_var *var, int size, int color, t_cube *game);
-void	ft_draw_line(double x0, double y0, double x1, double y1, int color, t_cube *game);
 double	ft_distance(double x1, double y1, double x2, double y2);
-void	draw_player(t_cube *game);
 void	update_player(void *param);
 void	init_player(char **map, t_cube *cube);
 void	draw_map(char **map, t_cube *game);
-void	draw_black_cover(char **map, t_cube *game);
 void	init_vars(t_var *v, t_cube *game);
 void	find_horizontal_hit(t_var *v, double a, t_cube *g);
 void	find_vertical_hit(t_var *v, double a, t_cube *g);
