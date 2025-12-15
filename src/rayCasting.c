@@ -84,8 +84,8 @@ int main(int ac, char *av[])
 	int		count_new_map;
 	int		begin;
 
-	game.win_w = 1080;
-	game.win_h = 720;
+	game.win_w = WIDTH;
+	game.win_h = HEIGHT;
 	atexit(ff);
 	if (ac != 2)
 		return (1);

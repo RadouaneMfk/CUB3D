@@ -24,6 +24,8 @@
 #define MINIMAP_TILE_SIZE 10
 #define VERTICAL 0
 #define HORIZONTAL 1
+#define WIDTH 1080
+#define HEIGHT 720
 
 typedef struct s_player
 {
