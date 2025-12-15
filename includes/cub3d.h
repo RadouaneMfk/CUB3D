@@ -168,7 +168,7 @@ typedef struct s_var
 
 
 
-void	castRays(t_cube *game);
+void	cast_rays(t_cube *game);
 void	draw_square(t_var *var, int size, int color, t_cube *game);
 double	ft_distance(double x1, double y1, double x2, double y2);
 void	update_player(void *param);
@@ -178,8 +178,8 @@ void	init_vars(t_var *v, t_cube *game);
 void	find_horizontal_hit(t_var *v, double a, t_cube *g);
 void	find_vertical_hit(t_var *v, double a, t_cube *g);
 void	select_hit(t_var *v);
-void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle);
-void	ft_cast_ray(int rayId, double angle, t_cube *game);
+void	compute_projection(t_var *v, int rayid, t_cube *g, double ray_angle);
+void	ft_cast_ray(int rayid, double angle, t_cube *game);
 void	init_vars(t_var *v, t_cube *game);
 void	check_horizontal_intercept(t_var *v, double a, t_cube *g);
 void	find_horizontal_hit(t_var *v, double a, t_cube *g);
@@ -187,8 +187,14 @@ void	check_vertical_intercept(t_var *v, double a, t_cube *g);
 void	find_vertical_hit(t_var *v, double a, t_cube *g);
 void	calcule_hit_ditance(t_var *v);
 void	init_player(char **map, t_cube *cube);
+void	ft_cast_ray(int rayid, double angle, t_cube *game);
+void	castRays(t_cube *game);
+void ft_resize(int width, int height, void *param);
+
 //parsing
 
+void	parsing_checks(t_cube game, char **str);
+void	parsing_checks2(t_cube game, t_game *cube);
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
@@ -242,8 +248,9 @@ int	valid_map(t_game *game);
 int	check_start_map(char *line);
 void	free_all_textures(t_cube *cube);
 void	free_texture(t_cube *cube, t_texture *tex);
+void clean_up(t_game *game);
 
 /******textures*/
 int init_textures(t_cube *cube,t_game *game);
-void draw_textured_wall(int rayId, t_var *v, t_cube *g,double ray_angle);
+void draw_textured_wall(int rayid, t_var *v, t_cube *g,double ray_angle);
 #endif

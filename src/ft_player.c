@@ -103,7 +103,7 @@ void	update_player(void *param)
 	mlx_delete_image(game->mlx, game->img);
 	game->img = mlx_new_image(game->mlx, game->win_w, game->win_h);
 	mlx_image_to_window(game->mlx, game->img, 0, 0);
-	castRays(game);
+	cast_rays(game);
 	if (game->win_h > 100 && game->win_w > 100)
 		draw_map(game->map, game);
 }

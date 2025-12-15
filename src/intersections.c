@@ -42,7 +42,7 @@ void	select_tex(t_var *v, t_cube *g, double ray_angle, t_texture **tex)
 	(*tex)->texX = (int)((v->hit_offset / TILE_SIZE) * (*tex)->width);
 }
 
-void	render_textures(int rayId, t_cube *g, t_var *v, t_texture *tex)
+void	render_textures(int rayid, t_cube *g, t_var *v, t_texture *tex)
 {
 	tex->y = v->top;
 	while (tex->y < v->bottom)
@@ -64,12 +64,12 @@ void	render_textures(int rayId, t_cube *g, t_var *v, t_texture *tex)
 		tex->a = tex->pixels[tex->index + 3];
 		tex->color = 
 			(tex->r << 24) | (tex->g_col << 16) | (tex->b << 8) | tex->a;
-		mlx_put_pixel(g->img, rayId, tex->y, tex->color);
+		mlx_put_pixel(g->img, rayid, tex->y, tex->color);
 		tex->y++;
 	}
 }
 
-void	draw_textured_wall(int rayId, t_var *v, t_cube *g, double ray_angle)
+void	draw_textured_wall(int rayid, t_var *v, t_cube *g, double ray_angle)
 {
 	t_texture	*tex;
 
@@ -88,10 +88,10 @@ void	draw_textured_wall(int rayId, t_var *v, t_cube *g, double ray_angle)
 	tex->pixels = (uint8_t *)tex->img->pixels;
 	tex->step = 1.0 * tex->height / v->WallStripHeight;
 	tex->texPos = (v->top - g->win_h / 2 + v->WallStripHeight / 2) * tex->step;
-	render_textures(rayId, g, v, tex);
+	render_textures(rayid, g, v, tex);
 }
 
-void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
+void	compute_projection(t_var *v, int rayid, t_cube *g, double ray_angle)
 {
 	int	y;
 
@@ -108,9 +108,9 @@ void	compute_projection(t_var *v, int rayId, t_cube *g, double ray_angle)
 		v->bottom = g->win_h - 1;
 	y = -1;
 	while (++y < v->top)
-		mlx_put_pixel(g->img, rayId, y, g->cube->ceiling_color);
-	draw_textured_wall(rayId, v, g, ray_angle);
+		mlx_put_pixel(g->img, rayid, y, g->cube->ceiling_color);
+	draw_textured_wall(rayid, v, g, ray_angle);
 	y = v->bottom - 1;
 	while (++y < g->win_h)
-		mlx_put_pixel(g->img, rayId, y, g->cube->floor_color);
+		mlx_put_pixel(g->img, rayid, y, g->cube->floor_color);
 }

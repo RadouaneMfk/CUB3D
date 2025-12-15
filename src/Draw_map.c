@@ -1,6 +1,6 @@
 #include "../includes/cub3d.h"
 
-void init_draw_map(t_var *var, char **map, t_cube *game)
+void	init_draw_map(t_var *var, char **map, t_cube *game)
 {
 	var->i = 0;
 	while (map[var->i])
@@ -18,7 +18,7 @@ void init_draw_map(t_var *var, char **map, t_cube *game)
 	var->y = var->start_y;
 }
 
-void draw_map(char **map, t_cube *game)
+void	draw_map(char **map, t_cube *game)
 {
 	t_var	var;
 
