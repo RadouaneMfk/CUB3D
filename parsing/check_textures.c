@@ -1,175 +1,100 @@
 #include "../includes/cub3d.h"
 
-char  *texture_no_space(char *path)
+int	check_path_exist(void)
 {
-    int start = 0;
-    int end = 0;
-    while(ft_isspace(path[start]))
-        start++;
-    end = ft_strlen(path) - 1;
-    while(end >= 0 && path[end])
-    {
-        if(ft_atoi(&path[end]))
-            path[end]='\0';
-        end--;
-    }
-    return(path + start);
+	int	fd_no;
+	int	fd_so;
+	int	fd_we;
+	int	fd_ea;
+
+	fd_no = open("./textures/north.png", O_RDONLY);
+	if (fd_no == -1)
+		return (0);
+	fd_so = open("./textures/south.png", O_RDONLY);
+	if (fd_so == -1)
+		return (0);
+	fd_we = open("./textures/west.png", O_RDONLY);
+	if (fd_we == -1)
+		return (0);
+	fd_ea = open("./textures/east.png", O_RDONLY);
+	if (fd_ea == -1)
+		return (0);
+	return (close(fd_no), close(fd_so), close(fd_we), close(fd_ea), 1);
 }
 
-int check_path_exist()
+int	initialtion_path(t_game *game)
 {
-    int fd_no = open("./textures/north.png",O_RDONLY);
-    if(fd_no == -1)
-        return(0);
-    int fd_so = open("./textures/south.png",O_RDONLY);
-    if(fd_so == -1)
-        return(0);
-    int fd_we = open("./textures/west.png",O_RDONLY);
-    if(fd_we == -1)
-        return(0);
-    int fd_ea = open("./textures/east.png",O_RDONLY);
-    if(fd_ea == -1)
-        return(0);
-    return (close(fd_no),close(fd_so),close(fd_we),close(fd_ea),1);
+	game->path_no = texture_no_space(game->path_no);
+	if (check_extension(game->path_no, ".png") == 0)
+		return (0);
+	game->path_so = texture_no_space(game->path_so);
+	if (check_extension(game->path_so, ".png") == 0)
+		return (0);
+	game->path_we = texture_no_space(game->path_we);
+	if (check_extension(game->path_we, ".png") == 0)
+		return (0);
+	game->path_ea = texture_no_space(game->path_ea);
+	if (check_extension(game->path_ea, ".png") == 0)
+		return (0);
+	return (1);
 }
 
-int initialtion_path(t_game *game)
+int	check_all_path(t_game *game, char *line)
 {
-    game->path_no = texture_no_space(game->path_no);
-    if(check_extension(game->path_no,".png") == 0)
-        return(0);
-    game->path_so = texture_no_space(game->path_so);
-    if(check_extension(game->path_so,".png") == 0)
-        return(0);
-    game->path_we = texture_no_space(game->path_we);
-    if(check_extension(game->path_we,".png") == 0)
-        return(0);
-    game->path_ea = texture_no_space(game->path_ea);
-    if(check_extension(game->path_ea,".png") == 0)
-        return(0);
-    return 1;
+	if (ft_strncmp(line, "NO ", 3) == 0)
+	{
+		if (!store_path_no(game, line))
+			return (0);
+	}
+	else if (ft_strncmp(line, "SO ", 3) == 0)
+	{
+		if (!store_path_so(game, line))
+			return (0);
+	}
+	else if (ft_strncmp(line, "EA ", 3) == 0)
+	{
+		if (!store_path_ea(game, line))
+			return (0);
+	}
+	else if (ft_strncmp(line, "WE ", 3) == 0)
+	{
+		if (!store_path_we(game, line))
+			return (0);
+	}
+	return (1);
 }
 
-void store_path(t_game *game)
+int	store_path(t_game *game)
 {
-    int i = 0;
-    char **split = NULL;
-    char *line;
-    while(game->map[i])
-    {
-        line = skip_spaces(game->map[i]);
-        if(ft_strncmp(line,"NO ",3) == 0)
-        {
+	int		i;
+	char	*line;
 
-            game->flag_no++;
-            line = trim_spaces(line);
-            split =  ft_split(line,' ');
-            if(count_line(split,0) != 2)
-            {
-                free_split(split);
-                write(2,"invalid path NO",16);
-                exit(1);
-            }
-            game->path_no = ft_strdup1(trim_spaces(split[1]));
-            free_split(split);
-            split = NULL;
-        }
-        else if(ft_strncmp(line,"SO ",3) == 0)
-        {
-            game->flag_so++;
-            line = trim_spaces(line);
-            split =  ft_split(line,' ');
-            if(count_line(split,0) != 2)
-            {
-                free_split(split);
-                write(2,"invalid path SO\n",17);
-                exit(1);
-            }
-            game->path_so = ft_strdup1(trim_spaces(split[1]));
-            free_split(split);
-            split = NULL;
-        }
-        else if(ft_strncmp(line,"EA ",3) == 0)
-        {
-            game->flag_ea++;
-            line = trim_spaces(line);
-            split =  ft_split(line,' ');
-            if(count_line(split,0) != 2)
-            {
-                free_split(split);
-                write(2,"invalid path EA\n",17);
-                exit(1);
-            }
-            game->path_ea = ft_strdup1(trim_spaces(split[1]));
-            free_split(split);
-            split = NULL;
-        }
-        else if(ft_strncmp(line,"WE ",3) == 0)
-        {
-            game->flag_we++;
-            line = trim_spaces(line);
-            split =  ft_split(line,' ');
-            if(count_line(split,0) != 2)
-            {
-                 free_split(split);
-                write(2,"invalid path WE\n",17);
-                exit(1);
-            }
-            game->path_we = ft_strdup1(trim_spaces(split[1]));
-            free_split(split);
-            split = NULL;
-        }
-        i++;
-    }
+	i = 0;
+	while (game->map[i])
+	{
+		line = skip_spaces(game->map[i]);
+		if (!check_all_path(game, line))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
-void parse_texture_line(t_game *game)
+int	parse_texture_line(t_game *game)
 {
-    store_path(game);
-    if(!game->path_no  || !game->path_so || !game->path_we || !game->path_ea)
-    {
-        free(game->path_ea);
-        free(game->path_we);
-        free(game->path_so);
-        free(game->path_no);
-        free_split(game->map);
-        free(game);
-        write(2,"erreur not found path\n",23);
-        exit(1);
-        
-    }
-    if(game->flag_no != 1 || game->flag_ea != 1 || game->flag_we != 1 || game->flag_so != 1)
-    {
-        free(game->path_ea);
-        free(game->path_we);
-        free(game->path_so);
-        free(game->path_no);
-        free_split(game->map);
-        free(game);
-        write(2,"duplicate path erreur!!!\n",26);
-        exit(1);
-    }
-    if(initialtion_path(game) == 0)
-    {
-        free(game->path_ea);
-        free(game->path_we);
-        free(game->path_so);
-        free(game->path_no);
-        free_split(game->map);
-        free(game);
-        write(2,"path not exist\n",16);
-        exit(1);
-    }
-    // if(check_path_exist() == 0)
-    // {
-    //     free(game->path_ea);
-    //     free(game->path_we);
-    //     free(game->path_so);
-    //     free(game->path_no);
-    //     free_split(game->map);
-    //     free(game);
-    //     write(2,"path not found\n",16);
-    //     exit(1);  
-        
-    // }
+	if (!store_path(game))
+		return (write(2, "Erreur\n", 8), write(2,
+				"used some word not need in the path\n", 37), 0);
+	if (!game->path_no || !game->path_so || !game->path_we || !game->path_ea)
+		return (write(2, "Erreur\n", 8), write(2, "not store all the path\n",
+				24), 0);
+	if (game->flag_no != 1 || game->flag_ea != 1 || game->flag_we != 1
+		|| game->flag_so != 1)
+		return (write(2, "Erreur\n", 8), write(2, "duplicate path erreur!!!\n",
+				26), 0);
+	if (initialtion_path(game) == 0)
+		return (write(2, "Erreur\n", 8), write(2, "path not exist\n", 16), 0);
+	if (check_path_exist() == 0)
+		return (write(2, "Erreur\n", 8), write(2, "path not found\n", 16), 0);
+	return (1);
 }

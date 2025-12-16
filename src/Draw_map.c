@@ -1,68 +1,49 @@
 #include "../includes/cub3d.h"
 
-void draw_map(char **map, t_cube *game)
+void	init_draw_map(t_var *var, char **map, t_cube *game)
 {
-	int map_height;
-	int map_width;
-	int i = 0;
-	while (map[i])
-		i++;
-	map_height = i;
+	var->i = 0;
+	while (map[var->i])
+		var->i++;
+	var->map_height = var->i;
 	if (map[0])
-		map_width = ft_strlen(map[0]);
-	int visible = 5;
-	int player_x = (int)game->player->pos_x;
-	int player_y = (int)game->player->pos_y;
-	int start_x = player_x - visible;
-	int start_y = player_y - visible;
-	int end_x = player_x + visible;
-	int end_y = player_y + visible;
-    int x;
-    int y;
-
-	y = start_y;
-    while (y <= end_y)
-    {
-		x = start_x;
-		while (x <= end_x)
-		{
-			if (y < 0 || y >= map_height || x < 0 || x >= map_width)
-			{
-				x++;
-				continue;
-			}
-			int minimap_x = (x - start_x) * MINIMAP_TILE_SIZE;
-			int minimap_y = (y - start_y) * MINIMAP_TILE_SIZE;
-			if (map[y][x] == '1')
-				draw_square(minimap_x, minimap_y, MINIMAP_TILE_SIZE, 0x6468699B, game);
-			// else
-			// 	draw_square(minimap_x, minimap_y, MINIMAP_TILE_SIZE, 0xFFFFFFFF, game);
-			x++;
-		}
-		y++;
-	}
-	draw_square(5 * MINIMAP_TILE_SIZE, 5 * MINIMAP_TILE_SIZE,
-	0.25 * MINIMAP_TILE_SIZE, 0xd3d3d3FF, game);
+		var->map_width = ft_strlen(map[0]);
+	var->visible = 5;
+	var->player_x = (int)game->player->pos_x;
+	var->player_y = (int)game->player->pos_y;
+	var->start_x = var->player_x - var->visible;
+	var->start_y = var->player_y - var->visible;
+	var->end_x = var->player_x + var->visible;
+	var->end_y = var->player_y + var->visible;
+	var->y = var->start_y;
 }
 
-void draw_black_cover(char **map, t_cube *game)
+void	draw_map(char **map, t_cube *game)
 {
-    int i, j;
-    double screen_x, screen_y;
+	t_var	var;
 
-    i = 0;
-    while (map[i])
-    {
-        j = 0;
-        while (map[i][j])
-        {
-            screen_x = j * TILE_SIZE * MINIMAP_SCALE;
-            screen_y = i * TILE_SIZE * MINIMAP_SCALE;
-
-            draw_square(screen_x, screen_y, TILE_SIZE * MINIMAP_SCALE, 0x000000FF, game); // couleur mur
-            j++;
-        }
-        i++;
-    }
+	init_draw_map(&var, map, game);
+	while (var.y <= var.end_y)
+	{
+		var.x = var.start_x;
+		while (var.x <= var.end_x)
+		{
+			if (var.y < 0 || var.y >= var.map_height 
+				|| var.x < 0 || var.x >= var.map_width)
+			{
+				var.x++;
+				continue ;
+			}
+			var.minimap_x = (var.x - var.start_x) * MINIMAP_TILE_SIZE;
+			var.minimap_y = (var.y - var.start_y) * MINIMAP_TILE_SIZE;
+			if (map[var.y][var.x] == '1')
+				draw_square(&var, MINIMAP_TILE_SIZE, 0x6468699B, game);
+			var.x++;
+		}
+		var.y++;
+	}
+	var.minimap_x = 5 * MINIMAP_TILE_SIZE;
+	var.minimap_y = 5 * MINIMAP_TILE_SIZE;
+	draw_square(&var, 0.30 * MINIMAP_TILE_SIZE, 0xd3d3d3FF, game);
 }
 
