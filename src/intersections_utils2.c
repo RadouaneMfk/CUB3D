@@ -2,18 +2,18 @@
 
 void	calcule_hit_ditance(t_var *v)
 {
-	if (v->HorzWallHit == 1)
+	if (v->horzwallhit == 1)
 	{
-		v->HorzHitDistance = ft_distance(v->player_px, v->player_py,
-				v->HorzWallHit_x, v->HorzWallHit_y);
+		v->horzhitdistance = ft_distance(v->player_px, v->player_py,
+				v->horzwallhit_x, v->horzwallhit_y);
 	}
 	else
-		v->HorzHitDistance = 500000;
-	if (v->VertWallHit == 1)
+		v->horzhitdistance = 500000;
+	if (v->vertwallhit == 1)
 	{
-		v->VertHitDistance = ft_distance(v->player_px, v->player_py,
-				v->VertWallHit_x, v->VertWallHit_y);
+		v->verthitdistance = ft_distance(v->player_px, v->player_py,
+				v->vertwallhit_x, v->vertwallhit_y);
 	}
 	else
-		v->VertHitDistance = 500000;
+		v->verthitdistance = 500000;
 }

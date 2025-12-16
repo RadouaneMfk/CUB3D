@@ -1,6 +1,6 @@
 #include "../includes/cub3d.h"
 
-void clean_up(t_game *game)
+void	clean_up(t_game *game)
 {
 	if (game->path_no)
 		free(game->path_no);
