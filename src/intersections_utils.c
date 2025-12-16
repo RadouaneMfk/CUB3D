@@ -13,7 +13,7 @@ void	init_vars(t_var *v, t_cube *game)
 	v->map_width = ft_strlen(game->map[0]);
 }
 
-void	check_horizontal_intercept(t_var *v, double a, t_cube *g)
+void	check_horizontal_intercept(t_var *v, double a)
 {
 	v->y_intercept = floor(v->player_py / v->ceil_size) * v->ceil_size;
 	if (sin(a) > 0)
@@ -33,7 +33,7 @@ void	check_horizontal_intercept(t_var *v, double a, t_cube *g)
 
 void	find_horizontal_hit(t_var *v, double a, t_cube *g)
 {
-	check_horizontal_intercept(v, a, g);
+	check_horizontal_intercept(v, a);
 	while (v->nextHorz_x > 0 && v->nextHorz_x <= v->map_width * TILE_SIZE
 		&& v->nextHorz_y > 0 && v->nextHorz_y <= v->map_height * TILE_SIZE)
 	{
@@ -56,7 +56,7 @@ void	find_horizontal_hit(t_var *v, double a, t_cube *g)
 	}
 }
 
-void	check_vertical_intercept(t_var *v, double a, t_cube *g)
+void	check_vertical_intercept(t_var *v, double a)
 {
 	v->x_intercept = floor(v->player_px / v->ceil_size) * v->ceil_size;
 	if (cos(a) > 0)
@@ -76,7 +76,7 @@ void	check_vertical_intercept(t_var *v, double a, t_cube *g)
 
 void	find_vertical_hit(t_var *v, double a, t_cube *g)
 {
-	check_vertical_intercept(v, a, g);
+	check_vertical_intercept(v, a);
 	while (v->nextVert_x > 0 && v->nextVert_x <= v->map_width * TILE_SIZE
 		&& v->nextVert_y > 0 && v->nextVert_y <= v->map_height * TILE_SIZE)
 	{

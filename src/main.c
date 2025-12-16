@@ -58,7 +58,7 @@ void	create_the_map(t_cube game, int start, int begin, t_game *cube)
 	game.cube->player_dir = check_palyer(cube->new_map);
 }
 
-int	ft_mlx_loop(t_game *cube, t_cube game)
+int	ft_mlx_render(t_game *cube, t_cube game)
 {
 	game.mlx = mlx_init(game.win_w, game.win_h, "CUB3D", true);
 	init_textures(&game, game.cube);
@@ -82,7 +82,6 @@ int	ft_mlx_loop(t_game *cube, t_cube game)
 int	main(int ac, char *av[])
 {
 	t_cube	game;
-	t_game	*cube;
 
 	int (start), (count_new_map), (begin);
 	if (ac != 2)
@@ -93,17 +92,17 @@ int	main(int ac, char *av[])
 	game.cube = malloc(sizeof(t_game));
 	if (!game.cube)
 		return (1);
-	cube->new_map = NULL;
+	game.cube->new_map = NULL;
 	parsing_checks(game, av);
 	start = find_start_of_map(game.cube);
 	count_new_map = count_line(game.cube->map, start);
-	cube->new_map = malloc(sizeof(char *) * (count_new_map + 1));
+	game.cube->new_map = malloc(sizeof(char *) * (count_new_map + 1));
 	begin = 0;
-	create_the_map(game, start, begin, cube);
-	parsing_checks2(game, cube);
-	parsing_checks3(game, cube);
+	create_the_map(game, start, begin, game.cube);
+	parsing_checks2(game, game.cube);
+	parsing_checks3(game, game.cube);
 	game.map = game.cube->map;
 	game.cube = game.cube;
-	ft_mlx_loop(cube, game);
+	ft_mlx_render(game.cube, game);
 	return (0);
 }
