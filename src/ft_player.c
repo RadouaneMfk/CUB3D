@@ -43,7 +43,7 @@ void	ft_mouse_key(t_cube *game, t_var *var)
 			(game->mlx, &game->player->cursor_x, &game->player->cursor_y);
 		mlx_set_mouse_pos(game->mlx, var->center_x, var->center_y);
 		var->delta = game->player->cursor_x - game->player->prev_mouse_x;
-		game->player->rotate_Angle += var->delta * 0.0015;
+		game->player->rotate_angle += var->delta * 0.0015;
 		game->player->prev_mouse_x = var->center_x;
 	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
@@ -51,15 +51,15 @@ void	ft_mouse_key(t_cube *game, t_var *var)
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
 		var->walk = -var->move_speed;
 	var->next_posx = game->player->pos_x + 
-		cos(game->player->rotate_Angle) * var->walk;
+		cos(game->player->rotate_angle) * var->walk;
 	var->next_posy = game->player->pos_y 
-		+ sin(game->player->rotate_Angle) * var->walk;
+		+ sin(game->player->rotate_angle) * var->walk;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
 	{
 		var->next_posx += 
-			cos(game->player->rotate_Angle + M_PI_2) * var->move_speed;
+			cos(game->player->rotate_angle + M_PI_2) * var->move_speed;
 		var->next_posy += 
-			sin(game->player->rotate_Angle + M_PI_2) * var->move_speed;
+			sin(game->player->rotate_angle + M_PI_2) * var->move_speed;
 	}
 }
 
@@ -68,14 +68,14 @@ void	ft_keys_down_2(t_cube *game, t_var *var)
 	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
 	{
 		var->next_posx -= 
-			cos(game->player->rotate_Angle + M_PI_2) * var->move_speed;
+			cos(game->player->rotate_angle + M_PI_2) * var->move_speed;
 		var->next_posy -= 
-			sin(game->player->rotate_Angle + M_PI_2) * var->move_speed;
+			sin(game->player->rotate_angle + M_PI_2) * var->move_speed;
 	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
-		game->player->rotate_Angle += var->move_speed;
+		game->player->rotate_angle += var->move_speed;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
-		game->player->rotate_Angle -= var->move_speed;
+		game->player->rotate_angle -= var->move_speed;
 	if (game->map[(int)(var->next_posy - var->radius)]
 			[(int)(var->next_posx - var->radius)] != '1' &&
 		game->map[(int)(var->next_posy - var->radius)]

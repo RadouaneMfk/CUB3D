@@ -46,4 +46,3 @@ void	draw_map(char **map, t_cube *game)
 	var.minimap_y = 5 * MINIMAP_TILE_SIZE;
 	draw_square(&var, 0.30 * MINIMAP_TILE_SIZE, 0xd3d3d3FF, game);
 }
-

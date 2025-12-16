@@ -15,13 +15,13 @@ void	init_player(char **map, t_cube *cube)
 				|| map[i][j] == 'E' || map[i][j] == 'W')
 			{
 				if (map[i][j] == 'N')
-					cube->player->rotate_Angle = M_PI / 2;
+					cube->player->rotate_angle = M_PI / 2;
 				if (map[i][j] == 'S')
-					cube->player->rotate_Angle = (3 * M_PI) / 2;
+					cube->player->rotate_angle = (3 * M_PI) / 2;
 				if (map[i][j] == 'E')
-					cube->player->rotate_Angle = 0;
+					cube->player->rotate_angle = 0;
 				if (map[i][j] == 'W')
-					cube->player->rotate_Angle = M_PI;
+					cube->player->rotate_angle = M_PI;
 				cube->player->pos_x = j + 0.5;
 				cube->player->pos_y = i + 0.5;
 			}

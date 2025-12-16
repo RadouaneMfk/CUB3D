@@ -19,9 +19,6 @@ OBJ = $(SRC:.c=.o)
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I includes -I /Users/haboucha/.brew/MLX42/include  #-fsanitize=address -g
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -I includes -I /Users/haboucha/.brew/MLX42/include #-fsanitize=address -g
-
 # Librairies
 MLX_LIB   = -L /Users/haboucha/.brew/MLX42/build -lmlx42
 FRAMEWORKS = -framework Cocoa -framework OpenGL -framework IOKit

@@ -68,5 +68,3 @@ int	init_textures(t_cube *cube, t_game *game)
 		return (0);
 	return (1);
 }
-
-

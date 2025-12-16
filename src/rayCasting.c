@@ -22,7 +22,7 @@ void	cast_rays(t_cube *game)
 
 	num_rays = game->win_w;
 	ray_increment = FOV / num_rays;
-	ray_angle = game->player->rotate_Angle - (FOV / 2);
+	ray_angle = game->player->rotate_angle - (FOV / 2);
 	rayid = 0;
 	while (rayid < num_rays)
 	{
