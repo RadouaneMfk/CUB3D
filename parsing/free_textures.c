@@ -16,4 +16,3 @@ void	free_all_textures(t_cube *cube)
 	free_texture(cube, &cube->textures.we);
 	free_texture(cube, &cube->textures.ea);
 }
-
