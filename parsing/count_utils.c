@@ -15,8 +15,8 @@ void	initisalitaion(t_game *game)
 	game->flag_ea = 0;
 	game->color_floor = NULL;
 	game->color_ceiling = NULL;
-	game->flag_C = 0;
-	game->flag_F = 0;
+	game->flag_c = 0;
+	game->flag_f = 0;
 }
 
 int	number_line(char *line)

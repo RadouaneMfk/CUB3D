@@ -5,7 +5,7 @@ int	store_color_floor(t_game *game, char *line)
 	char	**split_color;
 
 	split_color = NULL;
-	game->flag_F++;
+	game->flag_f++;
 	split_color = ft_split(ft_strchr1(line, ' '), ',');
 	if (count_commas(line) != 2)
 	{
@@ -22,7 +22,7 @@ int	store_color_ceiling(t_game *game, char *line)
 	char	**split_color;
 
 	split_color = NULL;
-	game->flag_C++;
+	game->flag_c++;
 	split_color = ft_split(ft_strchr1(line, ' '), ',');
 	if (count_commas(line) != 2)
 	{
