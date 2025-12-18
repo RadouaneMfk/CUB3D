@@ -3,7 +3,7 @@
 
 # include "../lib/libft.h"
 # include "../parsing/get_next_line/get_next_line.h"
-# include "MLX42/include/MLX42/MLX42.h"
+# include "MLX42/MLX42.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <limits.h>
