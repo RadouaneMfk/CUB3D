@@ -61,7 +61,12 @@ void	create_the_map(t_cube game, int start, int begin, t_game *cube)
 int	ft_mlx_render(t_game *cube, t_cube game)
 {
 	game.mlx = mlx_init(game.win_w, game.win_h, "CUB3D", true);
-	init_textures(&game, game.cube);
+	
+	if(!init_textures(&game, game.cube))
+	{
+		clean_up(cube);
+		exit(1);
+	}
 	game.player = malloc(sizeof(t_player));
 	if (check_alloc_failed(&game, cube) == 1)
 		return (1);

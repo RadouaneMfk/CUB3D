@@ -17,7 +17,7 @@ LGLFW = -L /Users/haboucha/.brew/opt/glfw/lib -lglfw
 OBJ = $(SRC:.c=.o)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I includes -I /Users/haboucha/.brew/MLX42/include  #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -I includes -I /Users/haboucha/.brew/MLX42/include  -fsanitize=address -g
 
 # Librairies
 MLX_LIB   = -L /Users/haboucha/.brew/MLX42/build -lmlx42

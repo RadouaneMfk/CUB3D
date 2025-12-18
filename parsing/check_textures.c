@@ -12,13 +12,13 @@ int	check_path_exist(void)
 		return (0);
 	fd_so = open("./textures/south.png", O_RDONLY);
 	if (fd_so == -1)
-		return (0);
+		return (close(fd_no), 0);
 	fd_we = open("./textures/west.png", O_RDONLY);
 	if (fd_we == -1)
-		return (0);
+		return (close(fd_no), close(fd_so), 0);
 	fd_ea = open("./textures/east.png", O_RDONLY);
 	if (fd_ea == -1)
-		return (0);
+		return (close(fd_no), close(fd_so), close(fd_we), 0);
 	return (close(fd_no), close(fd_so), close(fd_we), close(fd_ea), 1);
 }
 

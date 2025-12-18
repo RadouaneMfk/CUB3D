@@ -240,7 +240,7 @@ int					store_path_color(t_game *game);
 int					check_element_valid_in_map(char *line);
 int					check_element_start_map(char *line);
 void				aide_player(char **map, int *count, char *player);
-int					aide_map(t_game *game, int i, int j);
+int					aide_map(t_game *game,int i,int j);
 int					valid_map(t_game *game);
 int					check_start_map(char *line);
 void				free_all_textures(t_cube *cube);

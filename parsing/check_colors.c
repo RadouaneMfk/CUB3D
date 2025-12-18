@@ -86,7 +86,7 @@ int	parse_color_line(t_game *game)
 	if (game->flag_f != 1 || game->flag_c != 1)
 	{
 		write(2, "Erreur\n", 8);
-		write(2, "Dupplicate colors\n", 19);
+		write(2, "Dupplicate or color missing\n", 29);
 		return (0);
 	}
 	if (!color_floor(game))
