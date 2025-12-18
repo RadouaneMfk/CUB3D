@@ -9,21 +9,33 @@ SRC = intersections_bonus.c Draw_map_bonus.c main_bonus.c ft_player_bonus.c draw
 		cleanup_bonus.c raycasting_bonus.c ../parsing/utils.c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
-MLX = -I ../includes/MLX42/include -L ../includes/MLX42/build -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit
+# CFLAGS = -Wall -Wextra -Werror
+MLX = -I includes/MLX42/include -L includes/MLX42/build -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit
 
-LGLFW = -L $(HOME)/.brew/opt/glfw/lib -lglfw
+LGLFW = -L /Users/haboucha/.brew/opt/glfw/lib -lglfw 
 
 OBJ = $(SRC:.c=.o)
 
+# CC = cc
+CFLAGS = -Wall -Wextra -Werror -I includes -I /Users/haboucha/.brew/MLX42/include  -fsanitize=address -g
+# Librairies
+MLX_LIB   = -L /Users/haboucha/.brew/MLX42/build -lmlx42
+FRAMEWORKS = -framework Cocoa -framework OpenGL -framework IOKit
+
+# GLFW
+GLFW_PREFIX = $(shell brew --prefix glfw)
+GLFW_LIB    = -L $(GLFW_PREFIX)/lib -lglfw
+GLFW_INC    = -I $(GLFW_PREFIX)/include
+
+# Libft
 LIBFT = ../lib/libft.a
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(MLX) $(OBJ) $(LGLFW) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(MLX_LIB) $(FRAMEWORKS) $(GLFW_LIB) $(LIBFT) -o $(NAME)
 
-%.o: %.c ../includes/cub3d.h
+%.o: %.c includes/cub3d.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
@@ -34,4 +46,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean
+.PHONY: all clean fclean re
