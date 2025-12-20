@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/20 10:42:05 by rmouafik          #+#    #+#             */
+/*   Updated: 2025/12/20 10:42:06 by rmouafik         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
 # include "../lib/libft.h"
 # include "../parsing/get_next_line/get_next_line.h"
-# include "MLX42/MLX42.h"
+# include "../../MLX42/include/MLX42/MLX42.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -19,7 +31,7 @@
 # define MIN_H 100
 # define TILE_SIZE 64
 # define PLAYER_SIZE 20
-# define FOV M_PI / 3
+# define FOV 1.0471975512
 # define MINIMAP_TILE_SIZE 10
 # define VERTICAL 0
 # define HORIZONTAL 1
@@ -240,7 +252,7 @@ int					store_path_color(t_game *game);
 int					check_element_valid_in_map(char *line);
 int					check_element_start_map(char *line);
 void				aide_player(char **map, int *count, char *player);
-int					aide_map(t_game *game,int i,int j);
+int					aide_map(t_game *game, int i, int j);
 int					valid_map(t_game *game);
 int					check_start_map(char *line);
 void				free_all_textures(t_cube *cube);
