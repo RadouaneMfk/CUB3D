@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_map1.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/21 13:11:10 by haboucha          #+#    #+#             */
+/*   Updated: 2025/12/21 13:11:12 by haboucha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 char	**read_map(t_game *game, char *av)
@@ -27,19 +39,26 @@ char	**read_map(t_game *game, char *av)
 
 int	aide_map(t_game *game, int i, int j)
 {
+	int	row_len;
+	int	rows;
+
+	rows = count_number(game->map);
 	while (game->map[i][j])
 	{
 		if (game->map[i][j] == '0' || game->map[i][j] == 'N'
 			|| game->map[i][j] == 'S' || game->map[i][j] == 'E'
 			|| game->map[i][j] == 'W')
 		{
-			if (j > 0 && game->map[i][j - 1] == ' ')
+			row_len = ft_strlen(game->map[i]);
+			if (j == 0 || game->map[i][j - 1] == ' ')
 				return (0);
-			if (game->map[i][j + 1] == ' ')
+			if (j == row_len - 1 || game->map[i][j + 1] == ' ')
 				return (0);
-			if (game->map[i + 1] != NULL && game->map[i + 1][j] == ' ')
+			if (i == 0 || j >= (int)ft_strlen(game->map[i - 1]) || 
+				game->map[i - 1][j] == ' ')
 				return (0);
-			if (i > 0 && game->map[i - 1] != NULL && game->map[i - 1][j] == ' ')
+			if (i == rows - 1 || j >= (int)ft_strlen(game->map[i + 1])
+				|| game->map[i + 1][j] == ' ')
 				return (0);
 		}
 		j++;

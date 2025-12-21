@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/20 10:42:05 by rmouafik          #+#    #+#             */
+/*   Updated: 2025/12/21 13:17:59 by haboucha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -19,7 +31,7 @@
 # define MIN_H 100
 # define TILE_SIZE 64
 # define PLAYER_SIZE 20
-# define FOV M_PI / 3
+# define FOV 1.0471975512
 # define MINIMAP_TILE_SIZE 10
 # define VERTICAL 0
 # define HORIZONTAL 1
@@ -185,7 +197,7 @@ void				find_vertical_hit(t_var *v, double a, t_cube *g);
 void				calcule_hit_ditance(t_var *v);
 void				init_player(char **map, t_cube *cube);
 void				ft_cast_ray(int rayid, double angle, t_cube *game);
-void				castRays(t_cube *game);
+void				cast_rays(t_cube *game);
 void				ft_resize(int width, int height, void *param);
 
 // parsing

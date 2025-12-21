@@ -10,9 +10,9 @@ SRC = intersections_bonus.c Draw_map_bonus.c main_bonus.c ft_player_bonus.c draw
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-MLX = -I ../includes/MLX42/include -L ../includes/MLX42/build -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit
+MLX = -I $(HOME)/MLX42/include -L $(HOME)/MLX42/build -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit
 
-LGLFW = -L $(HOME)/.brew/opt/glfw/lib -lglfw
+LGLFW = -L $(HOME)/.brew/opt/glfw/lib -lglfw 
 
 OBJ = $(SRC:.c=.o)
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_textures.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/21 13:09:57 by haboucha          #+#    #+#             */
+/*   Updated: 2025/12/21 13:09:59 by haboucha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/cub3d.h"
 
 int	check_path_exist(void)
@@ -12,13 +24,13 @@ int	check_path_exist(void)
 		return (0);
 	fd_so = open("./textures/south.png", O_RDONLY);
 	if (fd_so == -1)
-		return (0);
+		return (close(fd_no), 0);
 	fd_we = open("./textures/west.png", O_RDONLY);
 	if (fd_we == -1)
-		return (0);
+		return (close(fd_no), close(fd_so), 0);
 	fd_ea = open("./textures/east.png", O_RDONLY);
 	if (fd_ea == -1)
-		return (0);
+		return (close(fd_no), close(fd_so), close(fd_we), 0);
 	return (close(fd_no), close(fd_so), close(fd_we), close(fd_ea), 1);
 }
 
