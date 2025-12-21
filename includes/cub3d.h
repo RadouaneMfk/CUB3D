@@ -6,7 +6,7 @@
 /*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 10:42:05 by rmouafik          #+#    #+#             */
-/*   Updated: 2025/12/20 10:42:06 by rmouafik         ###   ########.fr       */
+/*   Updated: 2025/12/20 11:20:46 by rmouafik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void				find_vertical_hit(t_var *v, double a, t_cube *g);
 void				calcule_hit_ditance(t_var *v);
 void				init_player(char **map, t_cube *cube);
 void				ft_cast_ray(int rayid, double angle, t_cube *game);
-void				castRays(t_cube *game);
+void				cast_rays(t_cube *game);
 void				ft_resize(int width, int height, void *param);
 
 // parsing

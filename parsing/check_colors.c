@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   check_colors.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/20 10:40:10 by rmouafik          #+#    #+#             */
-/*   Updated: 2025/12/20 10:40:11 by rmouafik         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/cub3d.h"
 
 int	check_extension(char *file, char *ext)
@@ -92,7 +80,7 @@ int	parse_color_line(t_game *game)
 {
 	if (!store_path_color(game))
 	{
-		write(2, "fixe numbers\n", 14);
+		write(2, "fix color numbers\n", 19);
 		return (0);
 	}
 	if (game->flag_f != 1 || game->flag_c != 1)
@@ -104,13 +92,13 @@ int	parse_color_line(t_game *game)
 	if (!color_floor(game))
 	{
 		write(2, "Erreur\n", 8);
-		write(2, "fixe color floor\n", 20);
+		write(2, "fix floor color\n", 17);
 		return (0);
 	}
 	if (!color_ceiling(game))
 	{
 		write(2, "Erreur\n", 8);
-		write(2, "fixe color ceiling\n", 20);
+		write(2, "fix ceiling color\n", 19);
 		return (0);
 	}
 	return (1);

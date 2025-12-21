@@ -9,10 +9,10 @@ SRC = src/intersections.c src/Draw_map.c src/main.c src/ft_player.c src/draw_uti
 		src/cleanup.c src/utils.c src/raycasting.c
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror 
 MLX = -I $(HOME)/MLX42/include -L $(HOME)/MLX42/build -lmlx42 -framework Cocoa -framework OpenGL -framework IOKit
 
-LGLFW = -L $(HOME)/.brew/opt/glfw/lib -lglfw 
+LGLFW = -L $(HOME)/.brew/opt/glfw/lib -lglfw
 
 OBJ = $(SRC:.c=.o)
 
@@ -24,7 +24,7 @@ $(NAME): $(OBJ)
 	$(CC) $(MLX) $(OBJ) $(LGLFW) $(LIBFT) -o $(NAME)
 
 %.o: %.c includes/cub3d.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC)  $(CFLAGS) -c  $< -o $@
 
 bonus:
 	@make all -C src_bonus
