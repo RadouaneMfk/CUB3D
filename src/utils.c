@@ -6,7 +6,7 @@
 /*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 10:39:48 by rmouafik          #+#    #+#             */
-/*   Updated: 2025/12/20 10:39:49 by rmouafik         ###   ########.fr       */
+/*   Updated: 2025/12/22 12:47:56 by rmouafik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	parsing_checks2(t_cube game, t_game *cube)
 	{
 		clean_up(game.cube);
 		write(2, "Error\n", 7);
-		write(2, "check teh validation of map!!\n", 31);
+		write(2, "check the validation of map!!\n", 31);
 		exit(1);
 	}
 	if (!check_first_char(cube->new_map))

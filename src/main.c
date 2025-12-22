@@ -6,7 +6,7 @@
 /*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 10:39:41 by rmouafik          #+#    #+#             */
-/*   Updated: 2025/12/22 09:48:17 by rmouafik         ###   ########.fr       */
+/*   Updated: 2025/12/22 12:47:34 by rmouafik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	parsing_checks3(t_cube game, t_game *cube)
 	{
 		clean_up(game.cube);
 		write(2, "Error\n", 7);
-		write(2, "map invalid!!\n", 15);
+		write(2, "invalid map!!\n", 15);
 		exit(1);
 	}
 	if (!element_valid(game.cube->map))
 	{
 		clean_up(game.cube);
 		write(2, "Error\n", 7);
-		write(2, "element incorrect in new map !!\n", 33);
+		write(2, "incorrect element in new map !!\n", 33);
 		exit(1);
 	}
 }

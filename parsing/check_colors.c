@@ -6,7 +6,7 @@
 /*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/21 13:09:38 by haboucha          #+#    #+#             */
-/*   Updated: 2025/12/22 12:33:54 by rmouafik         ###   ########.fr       */
+/*   Updated: 2025/12/22 12:44:41 by rmouafik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int	color_floor(t_game *game)
 	game->f_b = ft_atoi(game->color_floor[2]);
 	if ((game->f_r >= 0 && game->f_g >= 0 && game->f_b >= 0)
 		&& (game->f_r <= 255 && game->f_g <= 255 && game->f_b <= 255))
-		game->floor_color = (game->f_r << 24) | (game->f_g << 16) | (game->f_b << 8) | 0xFF;
+		game->floor_color = (game->f_r << 24) | (game->f_g << 16) 
+			| (game->f_b << 8) | 0xFF;
 	else
 		return (0);
 	return (1);
@@ -82,7 +83,8 @@ int	color_ceiling(t_game *game)
 	game->c_b = ft_atoi(game->color_ceiling[2]);
 	if ((game->c_r >= 0 && game->c_g >= 0 && game->c_b >= 0)
 		&& (game->c_r <= 255 && game->c_g <= 255 && game->c_b <= 255))
-		game->ceiling_color = (game->c_r << 24) | (game->c_g << 16) | (game->c_b << 8) | 0xFF;
+		game->ceiling_color = (game->c_r << 24) | (game->c_g << 16) 
+			| (game->c_b << 8) | 0xFF;
 	else
 		return (0);
 	return (1);
