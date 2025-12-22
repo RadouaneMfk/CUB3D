@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haboucha <haboucha@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 10:42:05 by rmouafik          #+#    #+#             */
-/*   Updated: 2025/12/21 13:17:59 by haboucha         ###   ########.fr       */
+/*   Updated: 2025/12/22 09:27:40 by rmouafik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "../lib/libft.h"
 # include "../parsing/get_next_line/get_next_line.h"
-# include "MLX42/MLX42.h"
+# include "../../MLX42/include/MLX42/MLX42.h"
 # include <ctype.h>
 # include <fcntl.h>
 # include <limits.h>

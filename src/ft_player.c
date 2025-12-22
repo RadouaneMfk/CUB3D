@@ -6,7 +6,7 @@
 /*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 10:39:28 by rmouafik          #+#    #+#             */
-/*   Updated: 2025/12/21 11:32:07 by rmouafik         ###   ########.fr       */
+/*   Updated: 2025/12/22 09:52:41 by rmouafik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,41 +23,14 @@ void	init_update_vars(t_var *var, t_cube *game)
 	var->center_y = game->win_h / 2;
 }
 
-void	ft_keys_down(t_cube *game, t_var *var)
+void	ft_keys_down(t_cube *game)
 {
-	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_CONTROL))
-	{
-		if (game->player->mouse_lock == false)
-		{
-			game->player->mouse_lock = true;
-			mlx_set_mouse_pos(game->mlx, var->center_x, var->center_y);
-			mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
-			game->player->prev_mouse_x = var->center_x;
-		}
-	}
-	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT_SHIFT))
-	{
-		if (game->player->mouse_lock == true)
-		{
-			game->player->mouse_lock = false;
-			mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
-		}
-	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(game->mlx);
 }
 
 void	ft_mouse_key(t_cube *game, t_var *var)
 {
-	if (game->player->mouse_lock)
-	{
-		mlx_get_mouse_pos
-			(game->mlx, &game->player->cursor_x, &game->player->cursor_y);
-		mlx_set_mouse_pos(game->mlx, var->center_x, var->center_y);
-		var->delta = game->player->cursor_x - game->player->prev_mouse_x;
-		game->player->rotate_angle += var->delta * 0.0015;
-		game->player->prev_mouse_x = var->center_x;
-	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
 		var->walk = var->move_speed;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
@@ -109,13 +82,11 @@ void	update_player(void *param)
 
 	game = (t_cube *)param;
 	init_update_vars(&var, game);
-	ft_keys_down(game, &var);
+	ft_keys_down(game);
 	ft_mouse_key(game, &var);
 	ft_keys_down_2(game, &var);
 	mlx_delete_image(game->mlx, game->img);
 	game->img = mlx_new_image(game->mlx, game->win_w, game->win_h);
 	mlx_image_to_window(game->mlx, game->img, 0, 0);
 	cast_rays(game);
-	if (game->win_h > 100 && game->win_w > 100)
-		draw_map(game->map, game);
 }

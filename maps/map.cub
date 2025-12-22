@@ -1,21 +1,18 @@
-
-NO  ./textures/north.png
-EA  ./textures/east.png
-WE  ./textures/west.png 
-SO  ./textures/south.png
+NO textures/north.png
+SO textures/south.png
+WE textures/west.png
+EA textures/east.png
 
 C  135, 206, 131
 F 119, 119, 2
-
-
 
 11111111111111111
 11111111111111111
 111 10000000000001
 11111111000000001
-1E010001001000001
+10010001001000001
 10010001011000001
- 1000110001000001
+ 1000110E01000001
 10110000000000001
 11001111111111111
   11             1 

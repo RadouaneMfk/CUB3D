@@ -6,7 +6,7 @@
 /*   By: rmouafik <rmouafik@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/20 10:39:41 by rmouafik          #+#    #+#             */
-/*   Updated: 2025/12/21 11:18:52 by rmouafik         ###   ########.fr       */
+/*   Updated: 2025/12/22 09:48:17 by rmouafik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,6 @@ int	ft_mlx_render(t_game *cube, t_cube game)
 	mlx_image_to_window(game.mlx, game.img, 0, 0);
 	mlx_resize_hook(game.mlx, ft_resize, &game);
 	init_player(game.map, &game);
-	if (game.win_h > 100 && game.win_w > 100)
-		draw_map(game.map, &game);
 	mlx_loop_hook(game.mlx, update_player, &game);
 	mlx_loop(game.mlx);
 	free_split(cube->new_map);
