@@ -3,8 +3,8 @@ SO textures/south.png
 WE textures/west.png
 EA textures/east.png
 
-C  135, 206, 131
-F 119, 119, 2
+C  255, 0, 0
+F 0, 0, 255
 
 11111111111111111
 11111111111111111
