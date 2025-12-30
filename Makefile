@@ -24,7 +24,7 @@ $(NAME): $(OBJ)
 	$(CC) $(MLX) $(OBJ) $(LGLFW) $(LIBFT) -o $(NAME)
 
 %.o: %.c includes/cub3d.h
-	$(CC)  $(CFLAGS) -c  $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 bonus:
 	@make all -C src_bonus
